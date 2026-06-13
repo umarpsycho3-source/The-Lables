@@ -400,10 +400,15 @@ app.post('/api/orders', verifyToken, async (req, res) => {
       }
     }
 
+    const mappedItems = req.body.items.map(item => ({
+      ...item,
+      productId: item.productId || item._id || item.id
+    }));
+
     const newOrder = new Order({
       user: req.user.id,
       status: 'Processing',
-      items: req.body.items,
+      items: mappedItems,
       total: req.body.total,
       paymentMethod: req.body.paymentMethod || 'credit_card',
       referenceCode: req.body.referenceCode || null,
