@@ -18,22 +18,22 @@ export default function Hero3D() {
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
       {/* Main Content Container */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center justify-between gap-16 mt-16">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 mt-28 lg:mt-16 pb-12 lg:pb-0">
         
         {/* Left Side: Text */}
         <motion.div
-          className="w-full lg:w-1/2"
+          className="w-full lg:w-1/2 flex flex-col justify-center mt-10 lg:mt-0 pr-10 sm:pr-14 md:pr-0"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="inline-block px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase mb-6">
+          <div className="inline-block self-start px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-4 lg:mb-6">
             Elite Football Apparel
           </div>
-          <h1 className="serif text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-bold mb-6 text-white leading-[1.1] drop-shadow-lg">
+          <h1 className="serif text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-bold mb-4 lg:mb-6 text-white leading-[1.15] drop-shadow-lg">
             Player Issue<br/>Supremacy
           </h1>
-          <p className="text-lg md:text-xl mb-10 text-gray-300 max-w-xl font-light leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl mb-8 lg:mb-10 text-gray-300 max-w-xl font-light leading-relaxed">
             Authentic player-version football jerseys engineered for peak performance and elite aesthetics on the pitch.
           </p>
           
