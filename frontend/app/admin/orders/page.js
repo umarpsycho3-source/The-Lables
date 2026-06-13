@@ -2,12 +2,12 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Truck, Eye, X, MapPin, Phone, Mail, User } from 'lucide-react';
+import { Truck, Eye, X, MapPin, Phone, Mail, User, Trash2 } from 'lucide-react';
 
 import { useState } from 'react';
 
 export default function AdminOrders() {
-  const { orders, updateOrderStatus } = useAuth();
+  const { orders, updateOrderStatus, deleteOrder } = useAuth();
   const [paymentFilter, setPaymentFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewOrder, setViewOrder] = useState(null);
@@ -122,6 +122,18 @@ export default function AdminOrders() {
                         <option value="Delivered">Delivered</option>
                         {order.status === 'Cancelled' && <option value="Cancelled">Cancelled</option>}
                       </select>
+                      
+                      <button
+                        onClick={() => {
+                          if (window.confirm("Are you sure you want to permanently delete this order?")) {
+                            deleteOrder(order.id);
+                          }
+                        }}
+                        className="text-gray-500 hover:text-red-500 transition-colors p-2 bg-white/5 hover:bg-red-500/10 rounded-lg"
+                        title="Delete Order"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   </td>
                 </tr>

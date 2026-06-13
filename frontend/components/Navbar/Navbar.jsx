@@ -243,7 +243,7 @@ export default function Navbar() {
             </Link>
           )}
           
-          <motion.div whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.9 }}>
+          <motion.div whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.9 }} className="hidden md:block">
             <Link href="/wishlist" className="p-2 flex text-foreground hover:text-red-400 transition-colors relative">
               <Heart size={20} />
               {wishlist.length > 0 && (
@@ -308,6 +308,17 @@ export default function Navbar() {
                     <p className="text-xs text-gray-400 font-medium">Get support anytime</p>
                   </div>
                   <ArrowRight size={20} className="text-gray-500 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                </Link>
+                
+                <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="group relative overflow-hidden rounded-2xl bg-red-500/5 p-4 flex items-center gap-4 border border-red-500/10 hover:border-red-500/50 transition-all">
+                  <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 group-hover:bg-red-500 group-hover:text-white transition-colors">
+                    <Heart size={24} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold tracking-widest uppercase text-white group-hover:text-red-400 transition-colors">Wishlist</h3>
+                    <p className="text-xs text-gray-400 font-medium">Your favorite items</p>
+                  </div>
+                  <ArrowRight size={20} className="text-gray-500 group-hover:text-red-400 group-hover:translate-x-1 transition-all" />
                 </Link>
                 
                 {user ? (

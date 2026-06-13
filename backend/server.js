@@ -460,6 +460,20 @@ app.put('/api/orders/:id/status', verifyToken, async (req, res) => {
   }
 });
 
+app.delete('/api/orders/:id', verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Admin only' });
+    }
+    const order = await Order.findByIdAndDelete(req.params.id);
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+    
+    res.json({ success: true, message: 'Order deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/notifications', verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

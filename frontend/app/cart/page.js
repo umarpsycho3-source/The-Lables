@@ -35,7 +35,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-background pt-32 px-6 pb-20">
       <div className="container mx-auto max-w-6xl">
-        <h1 className="serif text-5xl font-bold mb-12">Your <span className="text-primary italic">Selection</span></h1>
+        <h1 className="serif text-3xl md:text-5xl font-bold mb-8 md:mb-12">Your <span className="text-primary italic">Selection</span></h1>
 
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Cart Items */}
@@ -47,17 +47,17 @@ export default function CartPage() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="flex gap-6 bg-white/5 border border-white/10 p-6 rounded-3xl backdrop-blur-md relative group hover:border-primary/50 transition-colors"
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 bg-white/5 border border-white/10 p-4 sm:p-6 rounded-3xl backdrop-blur-md relative group hover:border-primary/50 transition-colors"
               >
-                <div className="w-32 h-32 relative rounded-2xl overflow-hidden shrink-0">
+                <div className="w-full h-48 sm:w-32 sm:h-32 relative rounded-2xl overflow-hidden shrink-0">
                   <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover" />
                 </div>
                 
                 <div className="flex-1">
-                  <div className="flex justify-between items-start mb-2">
+                  <div className="flex flex-col sm:flex-row justify-between items-start mb-2 gap-2 sm:gap-0">
                     <div>
-                      <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{item.name}</h3>
-                      <p className="text-secondary text-sm">{item.category}</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-primary transition-colors">{item.name}</h3>
+                      <p className="text-secondary text-xs sm:text-sm">{item.category}</p>
                       {item.selectedSize && (
                         <p className="text-white/60 text-sm mt-1">Size: <span className="text-white font-semibold">{item.selectedSize}</span></p>
                       )}
@@ -74,7 +74,7 @@ export default function CartPage() {
                     </div>
                   </div>
                   
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-4 bg-black/50 border border-white/10 rounded-xl p-1">
                       <button 
                         onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
@@ -105,13 +105,13 @@ export default function CartPage() {
           </div>
 
           {/* Order Summary */}
-          <div className="w-full lg:w-96 shrink-0">
+          <div className="w-full lg:w-96 shrink-0 mt-8 lg:mt-0">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md sticky top-32"
+              className="bg-white/5 border border-white/10 p-5 sm:p-8 rounded-3xl backdrop-blur-md sticky top-32"
             >
-              <h3 className="serif text-2xl font-bold mb-6">Order Summary</h3>
+              <h3 className="serif text-xl sm:text-2xl font-bold mb-6">Order Summary</h3>
               
               <div className="space-y-4 mb-8">
                 <div className="flex justify-between text-secondary">
@@ -129,9 +129,9 @@ export default function CartPage() {
               </div>
               
               <div className="border-t border-white/10 pt-6 mb-8">
-                <div className="flex justify-between items-end">
-                  <span className="text-lg font-medium">Estimated Total</span>
-                  <span className="text-3xl font-bold text-gold">{formatPrice(cartTotal)}</span>
+                <div className="flex justify-between items-end gap-4">
+                  <span className="text-base sm:text-lg font-medium">Estimated Total</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-gold">{formatPrice(cartTotal)}</span>
                 </div>
               </div>
               

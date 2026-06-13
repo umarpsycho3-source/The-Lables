@@ -163,6 +163,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const deleteOrder = async (orderId) => {
+    const token = localStorage.getItem('luxe_token');
+    const res = await fetch(`https://the-lables.onrender.com/api/orders/${orderId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (res.ok) {
+      setOrders(orders.filter(o => o.id !== orderId));
+    } else {
+      console.error("Failed to delete order");
+    }
+  };
+
   const cancelOrderItem = async (orderId, itemIndex) => {
     try {
       const res = await fetch(`https://the-lables.onrender.com/api/orders/${orderId}/items/${itemIndex}/cancel`, {
@@ -185,7 +198,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, orders, notifications, isLoading, login, register, logout, updateProfile, cancelOrder, updateOrderStatus, fetchOrders, fetchNotifications, markNotificationsAsRead, cancelOrderItem }}>
+    <AuthContext.Provider value={{ user, orders, notifications, isLoading, login, register, logout, updateProfile, cancelOrder, updateOrderStatus, deleteOrder, fetchOrders, fetchNotifications, markNotificationsAsRead, cancelOrderItem }}>
       {children}
     </AuthContext.Provider>
   );
