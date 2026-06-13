@@ -1,0 +1,508 @@
+{
+  "users": [
+    {
+      "id": "admin_001",
+      "name": "Admin",
+      "email": "admin@luxe.com",
+      "password": "admin",
+      "role": "admin"
+    },
+    {
+      "id": "usr_1781285019038",
+      "name": "Mohamad",
+      "email": "umarxgamer04@gmail.com",
+      "password": "admin",
+      "role": "customer"
+    },
+    {
+      "id": "usr_1781288574788",
+      "name": "Ahamad",
+      "email": "umartap@gmail.com",
+      "password": "UmarTaper1234",
+      "phone": "0771813023",
+      "role": "customer",
+      "notifications": [
+        {
+          "id": "NOTIF-248162",
+          "message": "Your order LUXE-69479 status was updated to: Delivered",
+          "date": "2026-06-12T19:00:31.905Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-966960",
+          "message": "Your order LUXE-69479 status was updated to: Shipped",
+          "date": "2026-06-12T19:00:30.092Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-416928",
+          "message": "Your order LUXE-69479 status was updated to: Processing",
+          "date": "2026-06-12T18:49:22.129Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-923893",
+          "message": "Your order LUXE-69479 status was updated to: Delivered",
+          "date": "2026-06-12T18:49:17.501Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-965613",
+          "message": "Your order LUXE-69479 status was updated to: Shipped",
+          "date": "2026-06-12T18:43:59.899Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-97836",
+          "message": "Your order LUXE-69479 status was updated to: Delivered",
+          "date": "2026-06-12T18:43:52.283Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-202374",
+          "message": "Your order LUXE-69479 status was updated to: Shipped",
+          "date": "2026-06-12T18:43:38.893Z",
+          "read": true
+        }
+      ]
+    },
+    {
+      "id": "usr_1781367817916",
+      "name": "The Label",
+      "email": "Label@gmail.com",
+      "password": "$2b$10$j5DGaWuR4iRClB65DkwHQ.MGck/3WTB6McJl1WhFexclqkubwXPXm",
+      "phone": "+940771813025",
+      "role": "customer",
+      "notifications": [
+        {
+          "id": "NOTIF-954445",
+          "message": "Your order LUXE-84745 status was updated to: Shipped",
+          "date": "2026-06-13T16:27:13.726Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-741780",
+          "message": "Your order LUXE-84745 status was updated to: Processing",
+          "date": "2026-06-13T16:27:12.649Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-560178",
+          "message": "Your order LUXE-84745 status was updated to: Shipped",
+          "date": "2026-06-13T16:27:09.970Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-142226",
+          "message": "Your order LUXE-84745 status was updated to: Processing",
+          "date": "2026-06-13T16:27:08.969Z",
+          "read": true
+        },
+        {
+          "id": "NOTIF-895490",
+          "message": "Your order LUXE-84745 status was updated to: Shipped",
+          "date": "2026-06-13T16:27:08.080Z",
+          "read": true
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "_id": "1",
+      "name": "Real Madrid 23/24 Player Version",
+      "category": "Real Madrid",
+      "price": 3500,
+      "image": "http://localhost:5000/uploads/product-1781293406245-857855692.jfif",
+      "color": "emerald",
+      "description": "Authentic player-issue Real Madrid home jersey featuring advanced cooling technology and an athletic fit.",
+      "reviews": [],
+      "isOffer": true,
+      "offerPrice": 3000,
+      "images": [
+        "http://localhost:5000/uploads/product-1781293406245-857855692.jfif",
+        "http://localhost:5000/uploads/product-1781293406247-590145972.jfif",
+        "http://localhost:5000/uploads/product-1781293406247-459440515.jfif"
+      ],
+      "isNewArrival": false,
+      "isOutOfStock": false,
+      "outOfStockSizes": [
+        "XXL",
+        "S"
+      ]
+    },
+    {
+      "_id": "5",
+      "name": "Brazil 2024 Copa America Player Edition",
+      "category": "Brazil ",
+      "price": 3600,
+      "image": "http://localhost:5000/uploads/product-1781293452353-612300097.jfif",
+      "color": "gold",
+      "description": "Authentic Brazil national team jersey featuring ultra-breathable fabric used by the pros.",
+      "reviews": [],
+      "isOffer": true,
+      "offerPrice": 3000,
+      "isNewArrival": true,
+      "isOutOfStock": false,
+      "images": [
+        "http://localhost:5000/uploads/product-1781293452353-612300097.jfif",
+        "http://localhost:5000/uploads/product-1781293452354-176424640.jfif",
+        "http://localhost:5000/uploads/product-1781293452354-227598375.jfif"
+      ],
+      "outOfStockSizes": []
+    },
+    {
+      "_id": "6",
+      "name": "Manchester City 23/24 Treble Winners Edition",
+      "category": "Manchester City",
+      "price": 3600,
+      "image": "http://localhost:5000/uploads/product-1781293488617-401587897.jfif",
+      "color": "emerald",
+      "description": "Premium player version kit celebrating the historic treble. Designed for maximum mobility and sweat-wicking.",
+      "reviews": [],
+      "isOffer": false,
+      "offerPrice": null,
+      "isNewArrival": false,
+      "isOutOfStock": false,
+      "images": [
+        "http://localhost:5000/uploads/product-1781293488617-401587897.jfif",
+        "http://localhost:5000/uploads/product-1781293488618-143200453.jfif",
+        "http://localhost:5000/uploads/product-1781293488618-851498319.jfif"
+      ],
+      "outOfStockSizes": [
+        "XXL"
+      ]
+    },
+    {
+      "_id": "prod_4onvv74y4",
+      "name": "Arsenal 23/24 Home Player Version",
+      "image": "http://localhost:5000/uploads/product-1781373518894-717911138.jfif",
+      "category": "Arsenal",
+      "price": 3600,
+      "description": "Authentic Arsenal home jersey for the 23/24 season.",
+      "isOffer": true,
+      "isNewArrival": true,
+      "outOfStockSizes": [],
+      "images": [
+        "http://localhost:5000/uploads/product-1781373518894-717911138.jfif",
+        "http://localhost:5000/uploads/product-1781373518894-242674030.jfif",
+        "http://localhost:5000/uploads/product-1781373518893-593506623.jfif"
+      ],
+      "color": "emerald",
+      "offerPrice": 3000
+    },
+    {
+      "_id": "prod_inv8hnobt",
+      "name": "FC Barcelona 23/24 Away Player Version",
+      "image": "http://localhost:5000/uploads/product-1781373556517-549324396.jfif",
+      "category": "Barcelona",
+      "price": 3600,
+      "description": "Authentic FC Barcelona away jersey for the 23/24 season.",
+      "isOffer": true,
+      "isNewArrival": true,
+      "outOfStockSizes": [
+        "S",
+        "XXL"
+      ],
+      "images": [
+        "http://localhost:5000/uploads/product-1781373556517-549324396.jfif",
+        "http://localhost:5000/uploads/product-1781373556518-868206012.jfif",
+        "http://localhost:5000/uploads/product-1781373556518-166635689.jfif"
+      ],
+      "color": "emerald",
+      "offerPrice": 3000
+    },
+    {
+      "_id": "prod_npjj22y2r",
+      "name": "Manchester United 23/24 Home Player Version",
+      "image": "http://localhost:5000/uploads/product-1781373616829-862429757.jfif",
+      "category": "Manchester United",
+      "price": 3600,
+      "description": "Authentic Manchester United home jersey for the 23/24 season.",
+      "isOffer": true,
+      "offerPrice": 3000,
+      "isNewArrival": true,
+      "outOfStockSizes": [
+        "XXL"
+      ],
+      "images": [
+        "http://localhost:5000/uploads/product-1781373616829-862429757.jfif",
+        "http://localhost:5000/uploads/product-1781373616829-264547552.jfif",
+        "http://localhost:5000/uploads/product-1781373616829-493309722.jfif"
+      ],
+      "color": "emerald"
+    },
+    {
+      "_id": "prod_vr29ep2ei",
+      "name": "Bayern Munich 23/24 Home Player Version",
+      "image": "http://localhost:5000/uploads/product-1781373662114-676952906.jfif",
+      "category": "Bayern Munich",
+      "price": 3600,
+      "description": "Authentic Bayern Munich home jersey for the 23/24 season.",
+      "isOffer": true,
+      "isNewArrival": true,
+      "outOfStockSizes": [
+        "S",
+        "XXL"
+      ],
+      "images": [
+        "http://localhost:5000/uploads/product-1781373662114-676952906.jfif",
+        "http://localhost:5000/uploads/product-1781373662115-636097603.jfif",
+        "http://localhost:5000/uploads/product-1781373662116-140746733.jfif"
+      ],
+      "color": "emerald",
+      "offerPrice": 3000
+    }
+  ],
+  "orders": [
+    {
+      "id": "LUXE-77522",
+      "userId": "usr_1781285019038",
+      "date": "2026-06-12T17:24:50.956Z",
+      "status": "Cancelled",
+      "items": [
+        {
+          "_id": "4",
+          "name": "Classic Black Tuxedo",
+          "category": "Mens Clothing",
+          "price": 850,
+          "image": "https://images.unsplash.com/photo-1594938291221-94f18cbb5660?q=80&w=2000&auto=format&fit=crop",
+          "color": "emerald",
+          "description": "Tailored Italian wool tuxedo, designed for the sharpest, most sophisticated evening look.",
+          "reviews": [],
+          "cartItemId": "4",
+          "quantity": 1,
+          "status": "Cancelled"
+        },
+        {
+          "_id": "4",
+          "name": "Classic Black Tuxedo",
+          "category": "Mens Clothing",
+          "price": 850,
+          "image": "https://images.unsplash.com/photo-1594938291221-94f18cbb5660?q=80&w=2000&auto=format&fit=crop",
+          "color": "emerald",
+          "description": "Tailored Italian wool tuxedo, designed for the sharpest, most sophisticated evening look.",
+          "reviews": [],
+          "selectedSize": "M",
+          "cartItemId": "4-M",
+          "quantity": 1,
+          "status": "Cancelled"
+        }
+      ],
+      "total": 0
+    },
+    {
+      "id": "LUXE-59229",
+      "userId": "usr_1781285019038",
+      "date": "2026-06-12T17:28:45.036Z",
+      "status": "Cancelled",
+      "items": [
+        {
+          "_id": "3",
+          "name": "Oud De Nuit Parfum",
+          "category": "Perfumes",
+          "price": 320,
+          "image": "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=1887&auto=format&fit=crop",
+          "color": "gold",
+          "description": "A luxurious exotic fragrance with deep notes of midnight oud, amber, and Madagascar vanilla.",
+          "reviews": [],
+          "selectedSize": "",
+          "cartItemId": "3",
+          "quantity": 1,
+          "status": "Cancelled"
+        }
+      ],
+      "total": 0
+    },
+    {
+      "id": "LUXE-23553",
+      "userId": "usr_1781285019038",
+      "date": "2026-06-12T17:38:04.612Z",
+      "status": "Cancelled",
+      "items": [
+        {
+          "_id": "1",
+          "name": "Real Madrid 23/24 Player Version",
+          "category": "Football Jerseys",
+          "price": 150,
+          "image": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop",
+          "color": "emerald",
+          "description": "Authentic player-issue Real Madrid home jersey featuring advanced cooling technology and an athletic fit.",
+          "reviews": [],
+          "selectedSize": "L",
+          "cartItemId": "1-L",
+          "quantity": 1,
+          "status": "Cancelled"
+        }
+      ],
+      "total": 0,
+      "paymentMethod": "cash_on_delivery",
+      "referenceCode": null,
+      "shippingDetails": {
+        "firstName": "Mohamad",
+        "lastName": "Umar",
+        "email": "umuarxgmaer04@gmail.com",
+        "address": "313, Nawalapitiya Road Ulapane"
+      }
+    },
+    {
+      "id": "LUXE-51759",
+      "userId": "usr_1781288574788",
+      "date": "2026-06-12T18:24:54.038Z",
+      "status": "Cancelled",
+      "items": [
+        {
+          "_id": "1",
+          "name": "Real Madrid 23/24 Player Version",
+          "category": "Football Jerseys",
+          "price": 150,
+          "image": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop",
+          "color": "emerald",
+          "description": "Authentic player-issue Real Madrid home jersey featuring advanced cooling technology and an athletic fit.",
+          "reviews": [],
+          "isOffer": true,
+          "offerPrice": 120,
+          "selectedSize": "S",
+          "cartItemId": "1-S",
+          "quantity": 1,
+          "status": "Cancelled"
+        },
+        {
+          "_id": "1",
+          "name": "Real Madrid 23/24 Player Version",
+          "category": "Football Jerseys",
+          "price": 150,
+          "image": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop",
+          "color": "emerald",
+          "description": "Authentic player-issue Real Madrid home jersey featuring advanced cooling technology and an athletic fit.",
+          "reviews": [],
+          "isOffer": true,
+          "offerPrice": 120,
+          "selectedSize": "XL",
+          "cartItemId": "1-XL",
+          "quantity": 1,
+          "status": "Cancelled"
+        }
+      ],
+      "total": 0,
+      "paymentMethod": "bank_transfer",
+      "referenceCode": "LUXE-REF-95835",
+      "shippingDetails": {
+        "firstName": "Ahamad",
+        "lastName": "Mohamad",
+        "email": "umart@gmail.com",
+        "phone": "0771813023",
+        "address": "313xx"
+      }
+    },
+    {
+      "id": "LUXE-53780",
+      "userId": "usr_1781288574788",
+      "date": "2026-06-12T18:36:15.401Z",
+      "status": "Cancelled",
+      "items": [
+        {
+          "_id": "1",
+          "name": "Real Madrid 23/24 Player Version",
+          "category": "Football Jerseys",
+          "price": 150,
+          "image": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop",
+          "color": "emerald",
+          "description": "Authentic player-issue Real Madrid home jersey featuring advanced cooling technology and an athletic fit.",
+          "reviews": [],
+          "isOffer": true,
+          "offerPrice": 120,
+          "selectedSize": "XXL",
+          "cartItemId": "1-XXL",
+          "quantity": 1,
+          "status": "Cancelled"
+        }
+      ],
+      "total": 0,
+      "paymentMethod": "bank_transfer",
+      "referenceCode": "LUXE-REF-622837",
+      "shippingDetails": {
+        "firstName": "Mohamad",
+        "lastName": "Ahamad",
+        "email": "umar@gmail.com",
+        "phone": "07781813023",
+        "address": "1234"
+      }
+    },
+    {
+      "id": "LUXE-69479",
+      "userId": "usr_1781288574788",
+      "date": "2026-06-12T18:37:39.897Z",
+      "status": "Delivered",
+      "items": [
+        {
+          "_id": "1",
+          "name": "Real Madrid 23/24 Player Version",
+          "category": "Football Jerseys",
+          "price": 150,
+          "image": "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop",
+          "color": "emerald",
+          "description": "Authentic player-issue Real Madrid home jersey featuring advanced cooling technology and an athletic fit.",
+          "reviews": [],
+          "isOffer": true,
+          "offerPrice": 120,
+          "selectedSize": "L",
+          "cartItemId": "1-L",
+          "quantity": 1
+        }
+      ],
+      "total": 120,
+      "paymentMethod": "bank_transfer",
+      "referenceCode": "LUXE-REF-5495",
+      "shippingDetails": {
+        "firstName": "Mohamad ",
+        "lastName": "UYmar",
+        "email": "546@fa",
+        "phone": "5656",
+        "address": "354k"
+      }
+    },
+    {
+      "id": "LUXE-84745",
+      "userId": "usr_1781367817916",
+      "date": "2026-06-13T16:26:28.860Z",
+      "status": "Shipped",
+      "items": [
+        {
+          "_id": "5",
+          "name": "Brazil 2024 Copa America Player Edition",
+          "category": "Football Jerseys",
+          "price": 3600,
+          "image": "http://localhost:5000/uploads/product-1781293452353-612300097.jfif",
+          "color": "gold",
+          "description": "Authentic Brazil national team jersey featuring ultra-breathable fabric used by the pros.",
+          "reviews": [],
+          "isOffer": true,
+          "offerPrice": 3000,
+          "isNewArrival": true,
+          "isOutOfStock": false,
+          "images": [
+            "http://localhost:5000/uploads/product-1781293452353-612300097.jfif",
+            "http://localhost:5000/uploads/product-1781293452354-176424640.jfif",
+            "http://localhost:5000/uploads/product-1781293452354-227598375.jfif"
+          ],
+          "outOfStockSizes": [],
+          "selectedSize": "S",
+          "cartItemId": "5-S",
+          "quantity": 1
+        }
+      ],
+      "total": 3000,
+      "paymentMethod": "bank_transfer",
+      "referenceCode": "LUXE-REF-928675",
+      "shippingDetails": {
+        "firstName": "Ahamad",
+        "lastName": "Ahamad",
+        "email": "Ahamad@gmail.com",
+        "phone": "+94771813023",
+        "address": "313, Nawa"
+      }
+    }
+  ],
+  "inquiries": []
+}

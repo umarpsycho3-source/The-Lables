@@ -1,0 +1,538 @@
+const express = require('express');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const fs = require('fs').promises;
+const path = require('path');
+const bcrypt = require('bcrypt');
+const rateLimit = require('express-rate-limit');
+const multer = require('multer');
+
+const http = require('http');
+const { Server } = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+let onlineAdmins = new Set();
+let activeChats = new Map();
+
+io.on('connection', (socket) => {
+  socket.on('admin_login', () => {
+    onlineAdmins.add(socket.id);
+    socket.join('admins');
+    io.emit('admin_status', { online: onlineAdmins.size > 0 });
+    
+    // Send all active chats to the newly connected admin
+    const chatsArray = Array.from(activeChats.values());
+    socket.emit('all_active_chats', chatsArray);
+  });
+
+  socket.on('check_admin_status', () => {
+    socket.emit('admin_status', { online: onlineAdmins.size > 0 });
+  });
+
+  socket.on('start_chat', (data) => {
+    const newChat = { 
+      id: socket.id, 
+      name: data.name, 
+      email: data.email, 
+      messages: [] 
+    };
+    activeChats.set(socket.id, newChat);
+    io.to('admins').emit('new_chat', newChat);
+  });
+
+  socket.on('user_message', (msg) => {
+    const chat = activeChats.get(socket.id);
+    if (chat) {
+      const messageObj = { sender: 'user', text: msg, time: new Date() };
+      chat.messages.push(messageObj);
+      io.to('admins').emit('user_message', { socketId: socket.id, message: messageObj });
+    }
+  });
+
+  socket.on('admin_message', (data) => {
+    const chat = activeChats.get(data.targetSocketId);
+    if (chat) {
+      const messageObj = { sender: 'admin', text: data.msg, time: new Date() };
+      chat.messages.push(messageObj);
+      io.to(data.targetSocketId).emit('admin_reply', data.msg);
+    }
+  });
+
+  socket.on('end_chat', () => {
+    if (activeChats.has(socket.id)) {
+      io.to('admins').emit('chat_ended', socket.id);
+      activeChats.delete(socket.id);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    if (onlineAdmins.has(socket.id)) {
+      onlineAdmins.delete(socket.id);
+      io.emit('admin_status', { online: onlineAdmins.size > 0 });
+    }
+    if (activeChats.has(socket.id)) {
+      io.to('admins').emit('chat_ended', socket.id);
+      activeChats.delete(socket.id);
+    }
+  });
+});
+const PORT = 5000;
+const SECRET_KEY = 'luxe_super_secret_key_123';
+const DB_FILE = path.join(__dirname, 'db.json');
+
+app.use(cors());
+app.use(express.json());
+
+// Serve uploads directory as static files
+const uploadsDir = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadsDir));
+
+// Multer Storage Configuration
+const storage = multer.diskStorage({
+  destination: async function (req, file, cb) {
+    // Ensure uploads directory exists
+    try {
+      await fs.mkdir(uploadsDir, { recursive: true });
+    } catch (err) {}
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, 'product-' + uniqueSuffix + ext);
+  }
+});
+const upload = multer({ storage: storage });
+
+// Helper to read DB
+async function readDB() {
+  try {
+    const data = await fs.readFile(DB_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    // If file doesn't exist, create default structure
+    const defaultDB = { 
+      users: [
+        { id: 'admin_001', name: 'Admin', email: 'admin@luxe.com', password: 'admin', role: 'admin' }
+      ], 
+      products: [
+        { _id: '1', name: 'Real Madrid 23/24 Player Version', category: 'Football Jerseys', price: 150, image: 'https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop', images: ['https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop'], color: 'emerald', description: 'Authentic player-issue Real Madrid home jersey featuring advanced cooling technology and an athletic fit.', reviews: [] },
+        { _id: '2', name: 'Argentina 2022 World Cup Edition', category: 'Football Jerseys', price: 180, image: 'https://images.unsplash.com/photo-1600181516264-3ea807faade4?q=80&w=2000&auto=format&fit=crop', images: ['https://images.unsplash.com/photo-1600181516264-3ea807faade4?q=80&w=2000&auto=format&fit=crop'], color: 'emerald', description: 'The legendary 3-star Argentina player version jersey worn during their historic World Cup victory.', reviews: [] },
+        { _id: '3', name: 'Oud De Nuit Parfum', category: 'Perfumes', price: 320, image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=1887&auto=format&fit=crop', images: ['https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=1887&auto=format&fit=crop'], color: 'gold', description: 'A luxurious exotic fragrance with deep notes of midnight oud, amber, and Madagascar vanilla.', reviews: [] },
+        { _id: '4', name: 'Classic Black Tuxedo', category: 'Mens Clothing', price: 850, image: 'https://images.unsplash.com/photo-1594938291221-94f18cbb5660?q=80&w=2000&auto=format&fit=crop', images: ['https://images.unsplash.com/photo-1594938291221-94f18cbb5660?q=80&w=2000&auto=format&fit=crop'], color: 'emerald', description: 'Tailored Italian wool tuxedo, designed for the sharpest, most sophisticated evening look.', reviews: [] }
+      ], 
+      orders: [],
+      inquiries: []
+    };
+    await fs.writeFile(DB_FILE, JSON.stringify(defaultDB, null, 2));
+    return defaultDB;
+  }
+}
+
+// Helper to write DB
+async function writeDB(data) {
+  await fs.writeFile(DB_FILE, JSON.stringify(data, null, 2));
+}
+
+// Middleware to verify JWT
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Access denied' });
+  
+  try {
+    const verified = jwt.verify(token, SECRET_KEY);
+    req.user = verified;
+    next();
+  } catch (err) {
+    res.status(400).json({ error: 'Invalid token' });
+  }
+};
+
+const otpStore = new Map();
+
+// Rate Limiter
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: { error: 'Too many requests from this IP, please try again after 15 minutes' }
+});
+
+// =======================
+// AUTH ROUTES
+// =======================
+app.use('/api/auth', apiLimiter);
+
+app.post('/api/auth/register', async (req, res) => {
+  const { name, email, password, phone } = req.body;
+  
+  if (!email || !email.toLowerCase().endsWith('@gmail.com')) {
+    return res.status(400).json({ error: 'Only @gmail.com addresses are allowed for security' });
+  }
+
+  const cleanPhone = phone?.replace(/\s+/g, '').replace(/[-()]/g, '') || '';
+  const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+  if (!phoneRegex.test(cleanPhone)) {
+    return res.status(400).json({ error: 'Invalid phone number format' });
+  }
+
+  const db = await readDB();
+  
+  if (db.users.find(u => u.email === email)) {
+    return res.status(400).json({ error: 'Email already registered' });
+  }
+  
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = { id: 'usr_' + Date.now(), name, email, password: hashedPassword, phone, role: 'customer' };
+  db.users.push(newUser);
+  await writeDB(db);
+  
+  const token = jwt.sign({ id: newUser.id, role: newUser.role }, SECRET_KEY);
+  res.json({ token, user: { id: newUser.id, name: newUser.name, email: newUser.email, phone: newUser.phone, role: newUser.role } });
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  const db = await readDB();
+  
+  const user = db.users.find(u => u.email === email);
+  if (!user) {
+    return res.status(400).json({ error: 'Invalid email or password' });
+  }
+  
+  const isMatch = user.password.startsWith('$2b$') 
+    ? await bcrypt.compare(password, user.password) 
+    : user.password === password;
+    
+  if (!isMatch) {
+    return res.status(400).json({ error: 'Invalid email or password' });
+  }
+  
+  const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY);
+  res.json({ token, user: { id: user.id, name: user.name, email: user.email, phone: user.phone, role: user.role } });
+});
+
+app.post('/api/auth/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  const db = await readDB();
+  const user = db.users.find(u => u.email === email);
+  if (!user) return res.status(404).json({ error: 'Email not found' });
+  
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  otpStore.set(email, { otp, expiry: Date.now() + 15 * 60 * 1000 });
+  
+  console.log(`[DEV ONLY] OTP for ${email} is ${otp}`);
+  res.json({ success: true, message: 'Verification code sent' });
+});
+
+app.post('/api/auth/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
+  const record = otpStore.get(email);
+  if (!record) return res.status(400).json({ error: 'No OTP requested for this email' });
+  if (Date.now() > record.expiry) return res.status(400).json({ error: 'OTP expired' });
+  if (record.otp !== otp) return res.status(400).json({ error: 'Invalid OTP' });
+  
+  res.json({ success: true, message: 'OTP verified' });
+});
+
+app.post('/api/auth/reset-password', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  const record = otpStore.get(email);
+  if (!record || record.otp !== otp) return res.status(400).json({ error: 'Invalid or expired OTP' });
+  
+  const db = await readDB();
+  const userIndex = db.users.findIndex(u => u.email === email);
+  if (userIndex === -1) return res.status(404).json({ error: 'User not found' });
+  
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  db.users[userIndex].password = hashedPassword;
+  await writeDB(db);
+  otpStore.delete(email);
+  
+  res.json({ success: true, message: 'Password reset successfully' });
+});
+
+// =======================
+// PRODUCTS ROUTES
+// =======================
+
+app.get('/api/products', async (req, res) => {
+  const db = await readDB();
+  res.json(db.products);
+});
+
+app.post('/api/products', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  
+  const db = await readDB();
+  const newProduct = { _id: Date.now().toString(), ...req.body };
+  db.products.push(newProduct);
+  await writeDB(db);
+  
+  res.json(newProduct);
+});
+
+app.put('/api/products/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  
+  const db = await readDB();
+  const productIndex = db.products.findIndex(p => p._id === req.params.id);
+  
+  if (productIndex === -1) return res.status(404).json({ error: 'Product not found' });
+  
+  // Merge new data
+  db.products[productIndex] = { ...db.products[productIndex], ...req.body, _id: req.params.id };
+  
+  // Update main image if images array is updated but image string is empty
+  if (db.products[productIndex].images && db.products[productIndex].images.length > 0 && !db.products[productIndex].image) {
+    db.products[productIndex].image = db.products[productIndex].images[0];
+  }
+  
+  await writeDB(db);
+  
+  res.json(db.products[productIndex]);
+});
+
+app.delete('/api/products/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  
+  const db = await readDB();
+  db.products = db.products.filter(p => p._id !== req.params.id);
+  await writeDB(db);
+  
+  res.json({ success: true });
+});
+
+app.post('/api/products/:id/reviews', verifyToken, async (req, res) => {
+  const db = await readDB();
+  const productIndex = db.products.findIndex(p => p._id === req.params.id);
+  
+  if (productIndex === -1) return res.status(404).json({ error: 'Product not found' });
+  
+  // Verify purchase
+  const userOrders = db.orders.filter(o => o.userId === req.user.id);
+  const hasPurchasedAndReceived = userOrders.some(order => 
+    order.status === 'Delivered' && 
+    order.items.some(item => item._id === req.params.id)
+  );
+
+  if (!hasPurchasedAndReceived) {
+    return res.status(403).json({ error: 'You can only review products you have purchased and received.' });
+  }
+
+  const newReview = { id: Date.now(), user: req.body.user, rating: req.body.rating, text: req.body.text };
+  if (!db.products[productIndex].reviews) db.products[productIndex].reviews = [];
+  db.products[productIndex].reviews.push(newReview);
+  
+  await writeDB(db);
+  res.json(db.products[productIndex]);
+});
+
+// =======================
+// ORDERS ROUTES
+// =======================
+
+// Get inquiries
+app.get('/api/inquiries', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  try {
+    const db = await readDB();
+    res.json(db.inquiries || []);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to read database' });
+  }
+});
+
+// File Upload Endpoint
+app.post('/api/upload', verifyToken, upload.array('images', 10), async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: 'No files uploaded' });
+    }
+    
+    // Construct URLs for the uploaded files
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const fileUrls = req.files.map(file => `${protocol}://${host}/uploads/${file.filename}`);
+    
+    res.json({ urls: fileUrls });
+  } catch (error) {
+    console.error('Upload Error:', error);
+    res.status(500).json({ error: 'File upload failed' });
+  }
+});
+
+app.get('/api/orders', verifyToken, async (req, res) => {
+  const db = await readDB();
+  if (req.user.role === 'admin') {
+    res.json(db.orders);
+  } else {
+    res.json(db.orders.filter(o => o.userId === req.user.id));
+  }
+});
+
+app.post('/api/orders', verifyToken, async (req, res) => {
+  const { shippingDetails } = req.body;
+  if (shippingDetails && shippingDetails.email) {
+    if (!shippingDetails.email.toLowerCase().endsWith('@gmail.com')) {
+      return res.status(400).json({ error: 'Only @gmail.com addresses are allowed for security' });
+    }
+  }
+  if (shippingDetails && shippingDetails.phone) {
+    const cleanPhone = shippingDetails.phone.replace(/\s+/g, '').replace(/[-()]/g, '');
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      return res.status(400).json({ error: 'Invalid phone number format' });
+    }
+  }
+
+  const db = await readDB();
+  const newOrder = { 
+    id: 'LUXE-' + Math.floor(Math.random() * 100000), 
+    userId: req.user.id,
+    date: new Date().toISOString(),
+    status: 'Processing',
+    items: req.body.items,
+    total: req.body.total,
+    paymentMethod: req.body.paymentMethod || 'credit_card',
+    referenceCode: req.body.referenceCode || null,
+    shippingDetails: req.body.shippingDetails || null
+  };
+  
+  db.orders.push(newOrder);
+  await writeDB(db);
+  res.json(newOrder);
+});
+
+app.put('/api/orders/:id/status', verifyToken, async (req, res) => {
+  const db = await readDB();
+  const orderIndex = db.orders.findIndex(o => o.id === req.params.id);
+  
+  if (orderIndex === -1) return res.status(404).json({ error: 'Order not found' });
+  
+  if (req.body.status === 'Cancelled') {
+    const orderDate = new Date(db.orders[orderIndex].date);
+    const diffHours = Math.abs(new Date() - orderDate) / 36e5;
+    if (diffHours > 24) return res.status(400).json({ error: 'Cancellation period expired' });
+  } else if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin only' });
+  }
+
+  db.orders[orderIndex].status = req.body.status;
+  
+  // Add notification for the user
+  if (req.user.role === 'admin') {
+    const userId = db.orders[orderIndex].userId;
+    const userIndex = db.users.findIndex(u => u.id === userId);
+    if (userIndex !== -1) {
+      if (!db.users[userIndex].notifications) {
+        db.users[userIndex].notifications = [];
+      }
+      db.users[userIndex].notifications.unshift({
+        id: 'NOTIF-' + Math.floor(Math.random() * 1000000),
+        message: `Your order ${db.orders[orderIndex].id} status was updated to: ${req.body.status}`,
+        date: new Date().toISOString(),
+        read: false
+      });
+    }
+  }
+
+  await writeDB(db);
+  res.json(db.orders[orderIndex]);
+});
+
+app.get('/api/notifications', verifyToken, async (req, res) => {
+  const db = await readDB();
+  const user = db.users.find(u => u.id === req.user.id);
+  res.json(user?.notifications || []);
+});
+
+app.put('/api/notifications/read', verifyToken, async (req, res) => {
+  const db = await readDB();
+  const userIndex = db.users.findIndex(u => u.id === req.user.id);
+  if (userIndex !== -1 && db.users[userIndex].notifications) {
+    db.users[userIndex].notifications.forEach(n => n.read = true);
+    await writeDB(db);
+  }
+  res.json({ success: true });
+});
+
+app.put('/api/orders/:id/items/:itemIndex/cancel', verifyToken, async (req, res) => {
+  const db = await readDB();
+  const orderIndex = db.orders.findIndex(o => o.id === req.params.id);
+  
+  if (orderIndex === -1) return res.status(404).json({ error: 'Order not found' });
+  
+  const orderDate = new Date(db.orders[orderIndex].date);
+  const diffHours = Math.abs(new Date() - orderDate) / 36e5;
+  if (diffHours > 24) return res.status(400).json({ error: 'Cancellation period expired' });
+
+  const itemIndex = parseInt(req.params.itemIndex);
+  if (!db.orders[orderIndex].items[itemIndex]) return res.status(404).json({ error: 'Item not found' });
+  
+  if (db.orders[orderIndex].items[itemIndex].status === 'Cancelled') {
+    return res.status(400).json({ error: 'Item is already cancelled' });
+  }
+
+  // Cancel the specific item
+  db.orders[orderIndex].items[itemIndex].status = 'Cancelled';
+  
+  // Recalculate total
+  const newTotal = db.orders[orderIndex].items.reduce((sum, item) => {
+    if (item.status !== 'Cancelled') {
+      return sum + (item.price * item.quantity);
+    }
+    return sum;
+  }, 0);
+  
+  db.orders[orderIndex].total = newTotal;
+
+  // If all items are cancelled, mark the entire order as Cancelled
+  const allCancelled = db.orders[orderIndex].items.every(item => item.status === 'Cancelled');
+  if (allCancelled) {
+    db.orders[orderIndex].status = 'Cancelled';
+  }
+
+  await writeDB(db);
+  res.json(db.orders[orderIndex]);
+});
+
+// --- Contact API ---
+app.post('/api/contact', async (req, res) => {
+  const { name, email, subject, message } = req.body;
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: 'Name, email, and message are required' });
+  }
+
+  const db = await readDB();
+  if (!db.inquiries) db.inquiries = [];
+
+  const newInquiry = {
+    id: 'INQ-' + Date.now(),
+    name,
+    email,
+    subject: subject || 'General Inquiry',
+    message,
+    date: new Date().toISOString(),
+    status: 'Unread'
+  };
+
+  db.inquiries.push(newInquiry);
+  await writeDB(db);
+
+  res.status(201).json({ success: true, message: 'Inquiry saved' });
+});
+
+server.listen(PORT, () => {
+  console.log(`Backend server running on http://localhost:${PORT}`);
+});
