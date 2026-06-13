@@ -22,29 +22,29 @@ export default function Hero3D() {
         
         {/* Left Side: Text */}
         <motion.div
-          className="w-full lg:w-1/2 flex flex-col justify-center mt-10 lg:mt-0 pr-10 sm:pr-14 md:pr-0"
+          className="w-full lg:w-1/2 flex flex-col justify-center mt-12 lg:mt-0 text-center lg:text-left pr-12 sm:pr-16 lg:pr-0 relative z-20"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="inline-block self-start px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-4 lg:mb-6">
+          <div className="inline-block mx-auto lg:mx-0 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-4 lg:mb-6">
             Elite Football Apparel
           </div>
-          <h1 className="serif text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-bold mb-4 lg:mb-6 text-white leading-[1.15] drop-shadow-lg">
+          <h1 className="serif text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-bold mb-4 lg:mb-6 text-white leading-[1.15] drop-shadow-lg mx-auto lg:mx-0">
             Player Issue<br/>Supremacy
           </h1>
-          <p className="text-base sm:text-lg md:text-xl mb-8 lg:mb-10 text-gray-300 max-w-xl font-light leading-relaxed">
+          <p className="text-sm sm:text-base md:text-xl mb-8 lg:mb-10 text-gray-300 max-w-sm sm:max-w-md mx-auto lg:mx-0 font-light leading-relaxed">
             Authentic player-version football jerseys engineered for peak performance and elite aesthetics on the pitch.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/collections/all">
-              <button className="w-full sm:w-auto bg-white hover:bg-gray-200 text-black rounded-full px-10 py-4 font-bold tracking-widest uppercase text-sm transition-colors shadow-xl">
+          <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 max-w-[240px] sm:max-w-none mx-auto lg:mx-0">
+            <Link href="/collections/all" className="w-full sm:w-auto">
+              <button className="w-full bg-white hover:bg-gray-200 text-black rounded-full px-6 py-3.5 font-bold tracking-widest uppercase text-[10px] sm:text-sm transition-colors shadow-xl">
                 Explore Jerseys
               </button>
             </Link>
-            <Link href="/collections/New Arrivals">
-              <button className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white rounded-full px-10 py-4 font-bold tracking-widest uppercase text-sm transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+            <Link href="/collections/New Arrivals" className="w-full sm:w-auto">
+              <button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white rounded-full px-6 py-3.5 font-bold tracking-widest uppercase text-[10px] sm:text-sm transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)]">
                 New Arrivals
               </button>
             </Link>

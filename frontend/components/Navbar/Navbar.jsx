@@ -60,10 +60,10 @@ export default function Navbar() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-        className="pointer-events-auto flex items-center justify-between gap-8 glass-nav rounded-[2rem] py-3 px-8 shadow-[0_20px_50px_rgba(16,185,129,0.15)] relative"
+        className="pointer-events-auto flex items-center justify-between gap-3 md:gap-8 glass-nav rounded-full py-2 px-4 md:py-3 md:px-8 shadow-[0_20px_50px_rgba(16,185,129,0.15)] relative w-[95%] md:w-auto max-w-full"
       >
         {/* Logo */}
-        <Link href="/" className="font-serif text-3xl font-bold tracking-[0.1em] text-gold hover:drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] transition-all">
+        <Link href="/" className="font-serif text-xl sm:text-2xl md:text-3xl font-bold tracking-widest text-gold hover:drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] transition-all shrink-0">
           The Label
         </Link>
 
