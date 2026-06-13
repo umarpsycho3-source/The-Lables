@@ -66,13 +66,13 @@ export function ProductProvider({ children }) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products');
+        const res = await fetch('https://the-lables.onrender.com/api/products');
         if (res.ok) {
           const data = await res.json();
           if (data.length === 0) {
             // Seed DB if empty
             await Promise.all(initialMockProducts.map(p => 
-              fetch('http://localhost:5000/api/products', {
+              fetch('https://the-lables.onrender.com/api/products', {
                 method: 'POST',
                 headers: { 
                   'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ export function ProductProvider({ children }) {
                 body: JSON.stringify(p)
               })
             ));
-            const newRes = await fetch('http://localhost:5000/api/products');
+            const newRes = await fetch('https://the-lables.onrender.com/api/products');
             setProducts(await newRes.json());
           } else {
             setProducts(data);
@@ -98,7 +98,7 @@ export function ProductProvider({ children }) {
 
   const addProduct = async (product) => {
     const token = localStorage.getItem('luxe_token');
-    const res = await fetch('http://localhost:5000/api/products', {
+    const res = await fetch('https://the-lables.onrender.com/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(product)
@@ -112,7 +112,7 @@ export function ProductProvider({ children }) {
   const updateProduct = async (id, updatedProduct) => {
     try {
       const token = localStorage.getItem('luxe_token');
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const res = await fetch(`https://the-lables.onrender.com/api/products/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ export function ProductProvider({ children }) {
 
   const deleteProduct = async (id) => {
     const token = localStorage.getItem('luxe_token');
-    const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+    const res = await fetch(`https://the-lables.onrender.com/api/products/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -142,7 +142,7 @@ export function ProductProvider({ children }) {
 
   const addReview = async (productId, review) => {
     const token = localStorage.getItem('luxe_token');
-    const res = await fetch(`http://localhost:5000/api/products/${productId}/reviews`, {
+    const res = await fetch(`https://the-lables.onrender.com/api/products/${productId}/reviews`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(review)

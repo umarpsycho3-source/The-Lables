@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
     try {
       const token = localStorage.getItem('luxe_token');
       if (token) {
-        const res = await fetch('http://localhost:5000/api/orders', {
+        const res = await fetch('https://the-lables.onrender.com/api/orders', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
     try {
       const token = localStorage.getItem('luxe_token');
       if (token) {
-        const res = await fetch('http://localhost:5000/api/notifications', {
+        const res = await fetch('https://the-lables.onrender.com/api/notifications', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
   const markNotificationsAsRead = async () => {
     try {
       const token = localStorage.getItem('luxe_token');
-      await fetch('http://localhost:5000/api/notifications/read', {
+      await fetch('https://the-lables.onrender.com/api/notifications/read', {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -79,7 +79,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const res = await fetch('http://localhost:5000/api/auth/login', {
+    const res = await fetch('https://the-lables.onrender.com/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -103,7 +103,7 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (name, email, password, phone) => {
-    const res = await fetch('http://localhost:5000/api/auth/register', {
+    const res = await fetch('https://the-lables.onrender.com/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, phone })
@@ -139,7 +139,7 @@ export function AuthProvider({ children }) {
 
   const cancelOrder = async (orderId) => {
     const token = localStorage.getItem('luxe_token');
-    await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+    await fetch(`https://the-lables.onrender.com/api/orders/${orderId}/status`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ status: 'Cancelled' })
@@ -150,7 +150,7 @@ export function AuthProvider({ children }) {
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem('luxe_token');
-      await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      await fetch(`https://the-lables.onrender.com/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ status: newStatus })
@@ -165,7 +165,7 @@ export function AuthProvider({ children }) {
 
   const cancelOrderItem = async (orderId, itemIndex) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/orders/${orderId}/items/${itemIndex}/cancel`, {
+      const res = await fetch(`https://the-lables.onrender.com/api/orders/${orderId}/items/${itemIndex}/cancel`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('luxe_token')}`

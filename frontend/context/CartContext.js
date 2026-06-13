@@ -17,7 +17,7 @@ export function CartProvider({ children }) {
       const token = localStorage.getItem('luxe_token');
       if (!token) return null;
 
-      const res = await fetch('http://localhost:5000/api/orders', {
+      const res = await fetch('https://the-lables.onrender.com/api/orders', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

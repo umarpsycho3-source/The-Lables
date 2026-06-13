@@ -42,7 +42,7 @@ export default function AdminProducts() {
       
       try {
         const token = localStorage.getItem('luxe_token');
-        const res = await fetch('http://localhost:5000/api/upload', {
+        const res = await fetch('https://the-lables.onrender.com/api/upload', {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
           body: formData

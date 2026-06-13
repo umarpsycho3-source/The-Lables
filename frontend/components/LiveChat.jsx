@@ -30,7 +30,7 @@ export default function LiveChat() {
     if (pathname && pathname.startsWith('/admin')) return;
 
     // Only connect if the chat is open to save resources, or connect initially to check status
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io('https://the-lables.onrender.com');
     setSocket(newSocket);
 
     newSocket.on('connect', () => {

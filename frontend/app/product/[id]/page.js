@@ -31,7 +31,7 @@ export default function ProductPage() {
     if (user) {
       setIsCheckingEligibility(true);
       const token = localStorage.getItem('luxe_token');
-      fetch('http://localhost:5000/api/orders', {
+      fetch('https://the-lables.onrender.com/api/orders', {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then(res => res.json())

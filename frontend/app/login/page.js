@@ -33,7 +33,7 @@ export default function LoginPage() {
     setSuccessMsg('');
     try {
       if (resetStep === 1) {
-        const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
+        const res = await fetch('https://the-lables.onrender.com/api/auth/forgot-password', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email })
         });
         const data = await res.json();
@@ -41,7 +41,7 @@ export default function LoginPage() {
         setSuccessMsg(data.message);
         setResetStep(2);
       } else if (resetStep === 2) {
-        const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
+        const res = await fetch('https://the-lables.onrender.com/api/auth/verify-otp', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, otp })
         });
         const data = await res.json();
@@ -49,7 +49,7 @@ export default function LoginPage() {
         setSuccessMsg(data.message);
         setResetStep(3);
       } else if (resetStep === 3) {
-        const res = await fetch('http://localhost:5000/api/auth/reset-password', {
+        const res = await fetch('https://the-lables.onrender.com/api/auth/reset-password', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, otp, newPassword })
         });
         const data = await res.json();
