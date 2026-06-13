@@ -60,10 +60,10 @@ export default function Navbar() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-        className="pointer-events-auto flex items-center justify-between gap-3 md:gap-8 glass-nav rounded-full py-2 px-4 md:py-3 md:px-8 shadow-[0_20px_50px_rgba(16,185,129,0.15)] relative w-[95%] md:w-auto max-w-full"
+        className="pointer-events-auto flex items-center justify-between glass-nav rounded-full py-2 px-4 md:py-3 md:px-8 shadow-[0_20px_50px_rgba(16,185,129,0.15)] relative w-[95%] md:w-auto max-w-full"
       >
         {/* Logo */}
-        <Link href="/" className="font-serif text-xl sm:text-2xl md:text-3xl font-bold tracking-widest text-gold hover:drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] transition-all shrink-0">
+        <Link href="/" className="font-serif text-lg sm:text-xl md:text-3xl font-bold tracking-widest text-gold hover:drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] transition-all shrink-0">
           The Label
         </Link>
 
@@ -91,8 +91,10 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Icons & Action Dock */}
-        <div className="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10">
+        {/* Icons & Action Dock Wrapper */}
+        <div className="flex items-center gap-2 md:gap-4 shrink-0">
+          {/* Main Icons Dock */}
+          <div className="flex items-center gap-1 sm:gap-2 bg-white/5 p-1 rounded-full border border-white/10">
           
           <motion.div layout className="flex items-center rounded-full px-2 relative">
             <AnimatePresence>
@@ -263,16 +265,17 @@ export default function Navbar() {
             </Link>
           </motion.div>
 
-        </div>
+          </div>
 
-        {/* Mobile Menu Toggle */}
-        <div className="md:hidden flex items-center ml-2 bg-white/5 p-1 rounded-full border border-white/10 pointer-events-auto">
-          <button 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-white hover:text-gold transition-colors"
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          {/* Mobile Menu Toggle */}
+          <div className="md:hidden flex items-center bg-white/5 p-1 rounded-full border border-white/10 pointer-events-auto">
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-1 sm:p-2 text-white hover:text-gold transition-colors"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu Dropdown */}
