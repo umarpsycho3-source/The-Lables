@@ -1,0 +1,83 @@
+.navWrapper {
+  position: fixed;
+  top: 1.5rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  padding: 0 1rem;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  width: 100%;
+  max-width: 1200px;
+  transition: all 0.3s ease;
+}
+
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent-gold);
+}
+
+.navLinks {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.navLinks li a {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  color: var(--text-primary);
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navLinks li a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--accent-gold);
+  transition: width 0.3s ease;
+}
+
+.navLinks li a:hover {
+  color: var(--accent-gold);
+}
+
+.navLinks li a:hover::after {
+  width: 100%;
+}
+
+.icons {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.iconBtn, .themeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.iconBtn:hover, .themeToggle:hover {
+  color: var(--accent-gold);
+  transform: translateY(-2px);
+}
