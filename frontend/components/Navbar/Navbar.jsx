@@ -96,7 +96,7 @@ export default function Navbar() {
           {/* Main Icons Dock */}
           <div className="flex items-center gap-1 sm:gap-2 bg-white/5 p-1 rounded-full border border-white/10">
           
-          <motion.div layout className="flex items-center rounded-full px-2 relative">
+          <motion.div layout className="hidden sm:flex items-center rounded-full px-2 relative">
             <AnimatePresence>
               {searchOpen && (
                 <motion.input
@@ -285,7 +285,7 @@ export default function Navbar() {
               initial={{ opacity: 0, y: -20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              className="absolute top-full left-4 right-4 mt-4 bg-black/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 shadow-2xl flex flex-col gap-8 md:hidden pointer-events-auto overflow-hidden"
+              className="absolute top-full left-4 right-4 mt-4 bg-black/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 shadow-2xl flex flex-col gap-8 md:hidden pointer-events-auto overflow-y-auto max-h-[70vh]"
             >
               <div className="flex flex-col gap-4">
                 <Link href="/collections/all" onClick={() => setMobileMenuOpen(false)} className="group relative overflow-hidden rounded-2xl bg-white/5 p-4 flex items-center gap-4 border border-white/5 hover:border-primary/50 transition-all">

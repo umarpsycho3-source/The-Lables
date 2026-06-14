@@ -111,12 +111,14 @@ export default function AdminOrders() {
                         onChange={(e) => updateOrderStatus(order.id, e.target.value)}
                         disabled={order.status === 'Cancelled'}
                         className={`bg-black/50 border border-white/10 rounded-lg p-2 text-sm focus:outline-none focus:border-primary appearance-none pr-8 cursor-pointer
+                          ${order.status === 'Under Review' ? 'text-purple-400' : ''}
                           ${order.status === 'Processing' ? 'text-yellow-400' : ''}
                           ${order.status === 'Shipped' ? 'text-blue-400' : ''}
                           ${order.status === 'Delivered' ? 'text-green-400' : ''}
                           ${order.status === 'Cancelled' ? 'text-red-400 opacity-50 cursor-not-allowed' : ''}
                         `}
                       >
+                        <option value="Under Review">Under Review</option>
                         <option value="Processing">Processing</option>
                         <option value="Shipped">Shipped</option>
                         <option value="Delivered">Delivered</option>
@@ -208,6 +210,22 @@ export default function AdminOrders() {
                       </span>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* Payment Details & Receipt */}
+              <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6">
+                <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Payment Info</h4>
+                <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+                  <div>
+                    <p className="text-sm text-gray-300 capitalize">Method: {(viewOrder.paymentMethod || 'Credit Card').replace(/_/g, ' ')}</p>
+                    {viewOrder.referenceCode && <p className="text-sm text-gray-300 mt-1">Ref Code: <span className="font-mono text-gold">{viewOrder.referenceCode}</span></p>}
+                  </div>
+                  {viewOrder.receiptImage && (
+                    <a href={viewOrder.receiptImage} target="_blank" rel="noopener noreferrer" className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/50 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                      View Receipt
+                    </a>
+                  )}
                 </div>
               </div>
 

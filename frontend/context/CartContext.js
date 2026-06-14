@@ -10,7 +10,7 @@ export function CartProvider({ children }) {
   const [isCartLoaded, setIsCartLoaded] = useState(false);
   const { fetchOrders } = useAuth();
 
-  const checkout = async (paymentMethod = 'credit_card', referenceCode = null, shippingDetails = null) => {
+  const checkout = async (paymentMethod = 'credit_card', referenceCode = null, receiptImage = null, shippingDetails = null) => {
     if (cartItems.length === 0) return null;
     
     try {
@@ -28,6 +28,7 @@ export function CartProvider({ children }) {
           total: cartTotal,
           paymentMethod,
           referenceCode,
+          receiptImage,
           shippingDetails
         })
       });

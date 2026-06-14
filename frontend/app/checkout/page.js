@@ -4,7 +4,7 @@ import { useCart } from '@/context/CartContext';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ArrowLeft, CreditCard, Lock, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, CreditCard, Lock, ShieldCheck, Upload, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 import { useCurrency } from '@/context/CurrencyContext';
 
@@ -23,6 +23,8 @@ export default function CheckoutPage() {
   
   // Payment State
   const [paymentMethod, setPaymentMethod] = useState('cash_on_delivery');
+  const [receiptImage, setReceiptImage] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Generate a random reference code for bank transfers
   const [bankRefCode] = useState(() => `LUXE-REF-${Math.floor(Math.random() * 1000000)}`);
@@ -48,10 +50,20 @@ export default function CheckoutPage() {
       return;
     }
 
+    if (paymentMethod === 'bank_transfer' && !receiptImage) {
+      alert("Please upload your bank transfer receipt to complete the order.");
+      return;
+    }
+
     setIsProcessing(true);
     
     const shippingDetails = { firstName, lastName, email, phone, address };
-    const result = await checkout(paymentMethod, paymentMethod === 'bank_transfer' ? bankRefCode : null, shippingDetails);
+    const result = await checkout(
+      paymentMethod, 
+      paymentMethod === 'bank_transfer' ? bankRefCode : null, 
+      paymentMethod === 'bank_transfer' ? receiptImage : null,
+      shippingDetails
+    );
     
     if (result && result.id) {
       setIsProcessing(false);
@@ -170,6 +182,48 @@ export default function CheckoutPage() {
                   <div className="border-t border-gold/20 pt-4">
                     <p className="text-sm text-gold mb-1 uppercase tracking-widest">IMPORTANT: Use this Reference Code in your transfer:</p>
                     <p className="text-2xl font-bold text-white tracking-wider">{bankRefCode}</p>
+                  </div>
+                  <div className="border-t border-gold/20 pt-4">
+                    <p className="text-sm text-gold mb-2 uppercase tracking-widest">Upload Transfer Receipt *</p>
+                    <div className="flex items-center gap-4">
+                      <label className="cursor-pointer bg-white/5 border border-white/20 hover:border-gold px-4 py-2 rounded-lg flex items-center gap-2 text-sm text-white transition-colors">
+                        <Upload size={16} />
+                        {isUploading ? 'Uploading...' : 'Choose Image'}
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          className="hidden"
+                          onChange={async (e) => {
+                            const file = e.target.files[0];
+                            if (!file) return;
+                            setIsUploading(true);
+                            const formData = new FormData();
+                            formData.append('images', file);
+                            try {
+                              const token = localStorage.getItem('luxe_token');
+                              const res = await fetch('https://the-lables.onrender.com/api/upload', {
+                                method: 'POST',
+                                headers: { 'Authorization': `Bearer ${token}` },
+                                body: formData
+                              });
+                              if (res.ok) {
+                                const data = await res.json();
+                                setReceiptImage(data.urls[0]);
+                              } else {
+                                alert('Failed to upload receipt.');
+                              }
+                            } catch (err) {
+                              console.error(err);
+                              alert('Error uploading receipt.');
+                            } finally {
+                              setIsUploading(false);
+                            }
+                          }}
+                          disabled={isUploading}
+                        />
+                      </label>
+                      {receiptImage && <span className="text-emerald-400 flex items-center gap-1 text-sm"><CheckCircle2 size={16} /> Uploaded</span>}
+                    </div>
                   </div>
                 </div>
               )}

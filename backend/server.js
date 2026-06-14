@@ -348,7 +348,6 @@ app.post('/api/products/:id/reviews', verifyToken, async (req, res) => {
 
 // File Upload Endpoint using Cloudinary
 app.post('/api/upload', verifyToken, uploadCloud.array('images', 10), async (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files uploaded' });
@@ -405,13 +404,18 @@ app.post('/api/orders', verifyToken, async (req, res) => {
       productId: item.productId || item._id || item.id
     }));
 
+    const initialStatus = (req.body.paymentMethod === 'bank_transfer' || req.body.paymentMethod === 'cash_on_delivery') 
+      ? 'Under Review' 
+      : 'Processing';
+
     const newOrder = new Order({
       user: req.user.id,
-      status: 'Processing',
+      status: initialStatus,
       items: mappedItems,
       total: req.body.total,
       paymentMethod: req.body.paymentMethod || 'credit_card',
       referenceCode: req.body.referenceCode || null,
+      receiptImage: req.body.receiptImage || null,
       shippingDetails: req.body.shippingDetails || null
     });
     

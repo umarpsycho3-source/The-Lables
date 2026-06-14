@@ -19,6 +19,7 @@ const orderSchema = new mongoose.Schema({
   total: { type: Number, required: true },
   paymentMethod: { type: String, default: 'credit_card' },
   referenceCode: { type: String },
+  receiptImage: { type: String },
   shippingDetails: {
     firstName: String,
     lastName: String,

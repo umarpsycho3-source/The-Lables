@@ -2,11 +2,12 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { motion } from 'framer-motion';
-import { Check, Truck, Package, RotateCcw, XCircle } from 'lucide-react';
+import { Check, Truck, Package, RotateCcw, XCircle, Clock } from 'lucide-react';
 import { useState } from 'react';
 import { useCurrency } from '@/context/CurrencyContext';
 
 const statuses = [
+  { name: 'Under Review', icon: Clock },
   { name: 'Processing', icon: Package },
   { name: 'Shipped', icon: Truck },
   { name: 'Delivered', icon: Check }
@@ -56,7 +57,7 @@ export default function OrdersPage() {
               
               <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8 border-b border-white/10 pb-6">
                 <div>
-                  <h3 className="serif text-2xl font-bold mb-1">Order {order.id}</h3>
+                  <h3 className="serif text-xl sm:text-2xl font-bold mb-1 break-all">Order {order.id}</h3>
                   <p className="text-secondary text-sm">Placed on {orderDate.toLocaleDateString()} at {orderDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                 </div>
                 <div className="text-right">
@@ -139,7 +140,7 @@ export default function OrdersPage() {
                 </div>
               )}
 
-              {/* Cancellation Footer */}
+              {/* Cancellation & Receipt Footer */}
               <div className="mt-8 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="text-sm">
                   {!isCancelled && (
@@ -148,6 +149,14 @@ export default function OrdersPage() {
                     ) : (
                       <span className="text-secondary flex items-center gap-2"><XCircle size={16} /> Order locked. Cancellation period (24h) has expired.</span>
                     )
+                  )}
+                </div>
+                {order.receiptImage && (
+                  <a href={order.receiptImage} target="_blank" rel="noopener noreferrer" className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/50 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                    View Uploaded Receipt
+                  </a>
+                )}
+              </div>
                   )}
                   {isCancelled && <span className="text-red-400">Your refund is currently processing for all cancelled items.</span>}
                 </div>
