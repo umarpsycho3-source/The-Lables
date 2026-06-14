@@ -2,6 +2,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar/Navbar';
 import Footer from '@/components/Footer/Footer';
 import FloatingSocials from '@/components/FloatingSocials/FloatingSocials';
+import FifaMarquee from '@/components/FifaMarquee/FifaMarquee';
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
 import LiveChat from '@/components/LiveChat';
 import { CartProvider } from '@/context/CartContext';
@@ -65,6 +66,7 @@ export default function RootLayout({ children }) {
               <WishlistProvider>
                 <CurrencyProvider>
                   <CartProvider>
+                    <FifaMarquee />
                     <Navbar />
                     <FloatingSocials />
                     <LiveChat />

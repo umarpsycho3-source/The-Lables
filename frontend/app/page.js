@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 import Link from 'next/link';
-import Image from 'next/image';
 import Hero3D from '@/components/Hero3D/Hero3D';
+import FifaSection from '@/components/FifaSection/FifaSection';
 import OffersCarousel from '@/components/OffersCarousel/OffersCarousel';
 import CustomerReviews from '@/components/CustomerReviews/CustomerReviews';
 import Features from '@/components/Features/Features';
@@ -46,6 +46,9 @@ export default function Home() {
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
       <Hero3D />
+
+      {/* FIFA World Cup Promo Section */}
+      <FifaSection />
 
       {/* Offers Carousel */}
       <OffersCarousel />

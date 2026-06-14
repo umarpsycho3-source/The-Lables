@@ -18,6 +18,15 @@ module.exports = {
         serif: ['var(--font-cinzel)', 'serif'],
         sans: ['var(--font-montserrat)', 'sans-serif'],
       },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        }
+      },
+      animation: {
+        marquee: 'marquee 20s linear infinite',
+      }
     },
   },
   plugins: [],
