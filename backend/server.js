@@ -102,63 +102,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// --- Contact Form Routes ---
 
-app.post('/api/contact', async (req, res) => {
-  try {
-    const { name, email, message } = req.body;
-    if (!name || !email || !message) {
-      return res.status(400).json({ error: 'Please provide name, email, and message' });
-    }
-    const newMessage = new ContactMessage({ name, email, message });
-    await newMessage.save();
-
-    // Optionally email the admin
-    if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
-      const mailOptions = {
-        from: `"The Label System" <${process.env.GMAIL_USER}>`,
-        to: process.env.GMAIL_USER, // Send to the admin's email
-        subject: `New Contact Form Submission from ${name}`,
-        html: `
-          <h3>New Message Received</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Message:</strong><br/>${message.replace(/\n/g, '<br/>')}</p>
-        `
-      };
-      await transporter.sendMail(mailOptions);
-    }
-
-    res.json({ success: true, message: 'Message sent successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get('/api/contact', verifyToken, async (req, res) => {
-  try {
-    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
-    const messages = await ContactMessage.find().sort({ createdAt: -1 });
-    res.json(messages.map(m => {
-      const obj = m.toObject();
-      obj.id = obj._id.toString();
-      return obj;
-    }));
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.put('/api/contact/:id/status', verifyToken, async (req, res) => {
-  try {
-    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
-    const msg = await ContactMessage.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
-    if (!msg) return res.status(404).json({ error: 'Message not found' });
-    res.json({ success: true, status: msg.status });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 const PORT = process.env.PORT || 5000;
 const SECRET_KEY = process.env.JWT_SECRET || 'luxe_super_secret_key_123';
@@ -632,35 +576,59 @@ app.put('/api/orders/:id/items/:itemIndex/cancel', verifyToken, async (req, res)
   }
 });
 
-// --- Contact API ---
-const Inquiry = require('./models/Inquiry');
-
-app.get('/api/inquiries', verifyToken, async (req, res) => {
-  try {
-    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
-    const inquiries = await Inquiry.find({});
-    res.json(inquiries.map(i => ({...i.toObject(), id: i._id.toString()})));
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch inquiries' });
-  }
-});
+// --- Contact Form Routes ---
 
 app.post('/api/contact', async (req, res) => {
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, email, message } = req.body;
     if (!name || !email || !message) {
-      return res.status(400).json({ error: 'Name, email, and message are required' });
+      return res.status(400).json({ error: 'Please provide name, email, and message' });
+    }
+    const newMessage = new ContactMessage({ name, email, message });
+    await newMessage.save();
+
+    // Optionally email the admin
+    if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
+      const mailOptions = {
+        from: `"The Label System" <${process.env.GMAIL_USER}>`,
+        to: process.env.GMAIL_USER, // Send to the admin's email
+        subject: `New Contact Form Submission from ${name}`,
+        html: `
+          <h3>New Message Received</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Message:</strong><br/>${message.replace(/\n/g, '<br/>')}</p>
+        `
+      };
+      await transporter.sendMail(mailOptions);
     }
 
-    const newInquiry = new Inquiry({
-      name,
-      email,
-      subject: subject || 'General Inquiry',
-      message
-    });
+    res.json({ success: true, message: 'Message sent successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-    await newInquiry.save();
-    res.status(201).json({ success: true, message: 'Inquiry saved' });
+app.get('/api/contact', verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+    const messages = await ContactMessage.find().sort({ createdAt: -1 });
+    res.json(messages.map(m => {
+      const obj = m.toObject();
+      obj.id = obj._id.toString();
+      return obj;
+    }));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/contact/:id/status', verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+    const msg = await ContactMessage.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
+    if (!msg) return res.status(404).json({ error: 'Message not found' });
+    res.json({ success: true, status: msg.status });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
