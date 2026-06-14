@@ -43,8 +43,7 @@ export default function OrdersPage() {
         orders.map((order) => {
           const orderDate = new Date(order.date);
           const now = new Date();
-          const diffHours = Math.abs(now - orderDate) / 36e5;
-          const canCancel = diffHours <= 24 && order.status !== 'Cancelled';
+          const canCancel = order.status === 'Under Review';
           const isCancelled = order.status === 'Cancelled';
 
           return (
@@ -145,9 +144,9 @@ export default function OrdersPage() {
                 <div className="text-sm">
                   {!isCancelled && (
                     canCancel ? (
-                      <span className="text-primary flex items-center gap-2"><RotateCcw size={16} /> Eligible for item cancellation (Under 24h)</span>
+                      <span className="text-primary flex items-center gap-2"><RotateCcw size={16} /> Eligible for item cancellation</span>
                     ) : (
-                      <span className="text-secondary flex items-center gap-2"><XCircle size={16} /> Order locked. Cancellation period (24h) has expired.</span>
+                      <span className="text-secondary flex items-center gap-2"><XCircle size={16} /> Order locked. Cancellation is only available while under review.</span>
                     )
                   )}
                   {isCancelled && <span className="text-red-400">Your refund is currently processing for all cancelled items.</span>}
