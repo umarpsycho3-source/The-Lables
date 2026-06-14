@@ -40,12 +40,12 @@ export default function Navbar() {
     {
       name: 'National Jerseys',
       href: '/collections/National Jerseys',
-      img: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop'
+      img: '/images/brazil-jersey.jpg'
     },
     {
       name: 'Club Jerseys',
       href: '/collections/Club Jerseys',
-      img: 'https://images.unsplash.com/photo-1551280857-2b9ebf241519?q=80&w=1000&auto=format&fit=crop'
+      img: '/images/madrid-jersey.jpg'
     }
   ];
 
