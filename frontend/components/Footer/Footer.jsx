@@ -72,8 +72,13 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Spacer */}
-          <div className="hidden md:block"></div>
+          {/* Legal Column */}
+          <div className="col-span-1 flex flex-col space-y-4">
+            <h4 className="text-white font-bold tracking-widest text-sm mb-2 uppercase">Legal</h4>
+            <Link href="/privacy-policy" className="text-secondary hover:text-primary transition-colors text-sm">Privacy Policy</Link>
+            <Link href="/terms" className="text-secondary hover:text-primary transition-colors text-sm">Terms & Conditions</Link>
+            <Link href="/how-to-use" className="text-secondary hover:text-primary transition-colors text-sm">How to Use</Link>
+          </div>
 
           {/* Links Columns */}
           <div className="col-span-1 flex flex-col space-y-4">
