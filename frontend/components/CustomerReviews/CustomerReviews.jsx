@@ -2,13 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Quote, BadgeCheck, MessageSquarePlus, ArrowRight } from 'lucide-react';
+import { Star, Quote, BadgeCheck, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import ReviewModal from '../ReviewModal/ReviewModal';
 
 export default function CustomerReviews() {
   const [reviews, setReviews] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const fetchReviews = async () => {
@@ -42,14 +40,7 @@ export default function CustomerReviews() {
           <p className="text-secondary text-lg max-w-2xl mx-auto mb-8">
             Don't just take our word for it. Read reviews from athletes and fans who experience our player-issue supremacy firsthand.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center">
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3 rounded-full font-bold uppercase tracking-widest text-sm transition-colors flex items-center gap-2"
-            >
-              <MessageSquarePlus size={18} />
-              Write a Review
-            </button>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center mt-6">
             {reviews.length > 3 && (
               <Link href="/reviews" className="text-primary hover:text-emerald-400 font-bold uppercase tracking-widest text-sm transition-colors flex items-center gap-1 group">
                 See All Reviews
@@ -117,14 +108,6 @@ export default function CustomerReviews() {
         )}
       </div>
 
-      <ReviewModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onSuccess={() => {
-          fetchReviews();
-          alert('Review submitted! It will appear once approved by an admin.');
-        }} 
-      />
     </section>
   );
 }

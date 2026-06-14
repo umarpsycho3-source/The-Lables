@@ -24,6 +24,7 @@ export default function ProductPage() {
   const [reviewText, setReviewText] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [canReview, setCanReview] = useState(false);
   const [isCheckingEligibility, setIsCheckingEligibility] = useState(false);
 
@@ -80,14 +81,35 @@ export default function ProductPage() {
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
-  const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!user) return alert("Please log in to leave a review.");
     if (!reviewText.trim()) return;
     
-    addReview(product._id, { user: user.name, rating, text: reviewText });
-    setReviewText('');
-    setRating(5);
+    setIsSubmittingReview(true);
+    try {
+      const token = localStorage.getItem('luxe_token');
+      const res = await fetch('https://the-lables.onrender.com/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ rating, text: reviewText })
+      });
+      if (res.ok) {
+        alert('Review submitted successfully! It will appear once approved by our team.');
+        setReviewText('');
+        setRating(5);
+      } else {
+        alert('Failed to submit review.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error submitting review.');
+    } finally {
+      setIsSubmittingReview(false);
+    }
   };
 
   return (
@@ -310,8 +332,8 @@ export default function ProductPage() {
                       placeholder="Share your experience..."
                     />
                   </div>
-                  <button type="submit" className="w-full bg-primary text-black py-3 rounded-xl font-bold hover:bg-emerald-500 transition-colors">
-                    Submit Review
+                  <button type="submit" disabled={isSubmittingReview} className="w-full bg-primary text-black py-3 rounded-xl font-bold hover:bg-emerald-500 transition-colors disabled:opacity-50">
+                    {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
                   </button>
                 </form>
               )}

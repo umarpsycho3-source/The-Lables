@@ -213,8 +213,10 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const token = typeof window !== 'undefined' ? localStorage.getItem('luxe_token') : null;
+
   return (
-    <AuthContext.Provider value={{ user, orders, notifications, isLoading, login, register, logout, updateProfile, cancelOrder, updateOrderStatus, deleteOrder, fetchOrders, fetchNotifications, markNotificationsAsRead, cancelOrderItem }}>
+    <AuthContext.Provider value={{ user, token, orders, notifications, isLoading, login, register, logout, updateProfile, cancelOrder, updateOrderStatus, deleteOrder, fetchOrders, fetchNotifications, markNotificationsAsRead, cancelOrderItem }}>
       {children}
     </AuthContext.Provider>
   );

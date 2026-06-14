@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Hero3D from '@/components/Hero3D/Hero3D';
 import OffersCarousel from '@/components/OffersCarousel/OffersCarousel';
 import CustomerReviews from '@/components/CustomerReviews/CustomerReviews';
+import Features from '@/components/Features/Features';
 import { ShoppingBag, ArrowRight, CheckCircle2, Heart } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useProducts } from '@/context/ProductContext';
@@ -45,9 +46,6 @@ export default function Home() {
     <div className="bg-background min-h-screen">
       {/* Hero Section */}
       <Hero3D />
-
-      {/* Customer Reviews */}
-      <CustomerReviews />
 
       {/* Offers Carousel */}
       <OffersCarousel />
@@ -171,6 +169,12 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Customer Reviews */}
+      <CustomerReviews />
+
+      {/* Features / Why Choose Us */}
+      <Features />
     </div>
   );
 }
