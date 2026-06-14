@@ -40,7 +40,7 @@ export default function Footer() {
           <span>Join our WhatsApp group for exclusive deals and support!</span>
         </div>
         <Link 
-          href="https://wa.me/94706990579" 
+          href="https://chat.whatsapp.com/KiWpf4MILYwBV3D4qxJnHP" 
           target="_blank"
           className="bg-primary hover:bg-emerald-500 text-black px-4 py-1.5 rounded-lg text-sm font-bold transition-colors shadow-[0_0_15px_rgba(16,185,129,0.3)]"
         >
@@ -63,7 +63,7 @@ export default function Footer() {
               <Link href="#" className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
                 <FacebookIcon />
               </Link>
-              <Link href="#" className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+              <Link href="https://www.instagram.com/_thelabel.lk_?igsh=bWZ1aHRxMTNteHpj" target="_blank" className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
                 <InstagramIcon />
               </Link>
               <Link href="#" className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
@@ -98,7 +98,7 @@ export default function Footer() {
             © 2026 The Label. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-gray-500">
-            <Link href="/support" className="hover:text-white transition-colors">Join WhatsApp</Link>
+            <Link href="https://chat.whatsapp.com/KiWpf4MILYwBV3D4qxJnHP" target="_blank" className="hover:text-white transition-colors">Join WhatsApp</Link>
             <Link href="/support" className="hover:text-white transition-colors">Contact Support</Link>
           </div>
         </div>
