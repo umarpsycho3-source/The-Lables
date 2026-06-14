@@ -22,7 +22,7 @@ export default function Hero3D() {
         
         {/* Left Side: Text */}
         <motion.div
-          className="w-full lg:w-1/2 flex flex-col justify-center mt-12 lg:mt-0 text-center lg:text-left pr-12 sm:pr-16 lg:pr-0 relative z-20"
+          className="w-full lg:w-1/2 flex flex-col justify-center mt-12 lg:mt-0 text-center lg:text-left relative z-20"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
