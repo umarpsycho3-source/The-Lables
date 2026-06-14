@@ -150,16 +150,13 @@ export default function OrdersPage() {
                       <span className="text-secondary flex items-center gap-2"><XCircle size={16} /> Order locked. Cancellation period (24h) has expired.</span>
                     )
                   )}
+                  {isCancelled && <span className="text-red-400">Your refund is currently processing for all cancelled items.</span>}
                 </div>
                 {order.receiptImage && (
                   <a href={order.receiptImage} target="_blank" rel="noopener noreferrer" className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/50 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
                     View Uploaded Receipt
                   </a>
                 )}
-              </div>
-                  )}
-                  {isCancelled && <span className="text-red-400">Your refund is currently processing for all cancelled items.</span>}
-                </div>
               </div>
             </div>
           );
