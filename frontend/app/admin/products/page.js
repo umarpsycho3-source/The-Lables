@@ -12,7 +12,7 @@ export default function AdminProducts() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const defaultProduct = { name: '', category: '', price: '', image: '', images: [], color: 'emerald', description: '', isOffer: false, offerPrice: '', isNewArrival: false, outOfStockSizes: [] };
+  const defaultProduct = { name: '', category: 'National Jerseys', price: '', image: '', images: [], color: 'emerald', description: '', isOffer: false, offerPrice: '', isNewArrival: false, outOfStockSizes: [] };
   const [newProduct, setNewProduct] = useState(defaultProduct);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -101,7 +101,7 @@ export default function AdminProducts() {
     setEditingId(product._id);
     setNewProduct({
       name: product.name,
-      category: product.category || 'Football Jerseys',
+      category: product.category || 'National Jerseys',
       price: product.price,
       image: product.image,
       images: product.images || (product.image ? [product.image] : []),
@@ -245,14 +245,15 @@ export default function AdminProducts() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Category</label>
-                    <input 
+                    <select 
                       required 
-                      type="text"
-                      placeholder="e.g. Real Madrid, T-Shirts"
                       value={newProduct.category} 
                       onChange={e => setNewProduct({...newProduct, category: e.target.value})} 
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
-                    />
+                      className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-primary appearance-none"
+                    >
+                      <option value="National Jerseys">National Jerseys</option>
+                      <option value="Club Jerseys">Club Jerseys</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Price (LKR)</label>

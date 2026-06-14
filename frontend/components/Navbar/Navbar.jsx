@@ -35,16 +35,19 @@ export default function Navbar() {
 
   const suggestedProducts = products.slice(0, 3);
 
-  // Dynamically generate categories from products
-  const uniqueCategories = [...new Set(products.map(p => p.category).filter(Boolean))];
-  const dynamicCategories = uniqueCategories.map(cat => {
-    const product = products.find(p => p.category === cat);
-    return {
-      name: cat,
-      href: `/collections/${encodeURIComponent(cat)}`,
-      img: product?.image || 'https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=2000&auto=format&fit=crop'
-    };
-  });
+  // Hardcoded categories as requested
+  const dynamicCategories = [
+    {
+      name: 'National Jerseys',
+      href: '/collections/National Jerseys',
+      img: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop'
+    },
+    {
+      name: 'Club Jerseys',
+      href: '/collections/Club Jerseys',
+      img: 'https://images.unsplash.com/photo-1600255821058-c41165a36322?q=80&w=1000&auto=format&fit=crop'
+    }
+  ];
 
   useEffect(() => setMounted(true), []);
 

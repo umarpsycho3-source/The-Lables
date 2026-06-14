@@ -60,8 +60,23 @@ export default function CollectionPage() {
         </div>
 
         {/* Filter and Sort Bar */}
-        {filteredProducts.length > 0 && (
-          <div className="flex justify-end mb-8">
+        {products.length > 0 && (
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+            <div className="flex items-center gap-2 bg-white/5 p-1 rounded-2xl border border-white/10">
+              {['All', 'National Jerseys', 'Club Jerseys'].map(cat => (
+                <Link 
+                  key={cat}
+                  href={`/collections/${encodeURIComponent(cat.toLowerCase() === 'all' ? 'all' : cat)}`}
+                  className={`px-6 py-2 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${
+                    (categoryName.toLowerCase() === cat.toLowerCase() || (cat === 'All' && categoryName.toLowerCase() === 'all'))
+                      ? 'bg-primary text-black' 
+                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {cat}
+                </Link>
+              ))}
+            </div>
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-400">Sort by:</span>
               <select 
