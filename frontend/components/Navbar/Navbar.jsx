@@ -201,10 +201,10 @@ export default function Navbar() {
               <AnimatePresence>
                 {notificationsOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full mt-4 right-0 w-80 bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl z-50 max-h-96 overflow-y-auto pointer-events-auto"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full mt-4 -right-20 sm:right-0 w-[85vw] sm:w-80 max-w-[320px] bg-black/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-4 shadow-2xl z-50 max-h-96 overflow-y-auto pointer-events-auto origin-top-right"
                   >
                     <h3 className="text-white font-bold mb-3 border-b border-white/10 pb-2">Notifications</h3>
                     {notifications?.length > 0 ? (
