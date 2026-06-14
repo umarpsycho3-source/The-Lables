@@ -80,7 +80,7 @@ export default function FloatingSocials() {
   return (
     <div className="fixed right-6 bottom-1/4 z-50 flex flex-col gap-4 pointer-events-auto">
       <motion.a 
-        href="https://facebook.com"
+        href="https://www.facebook.com/"
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.1, x: -5 }}
