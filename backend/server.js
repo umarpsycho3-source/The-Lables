@@ -12,7 +12,10 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS
-  }
+  },
+  connectionTimeout: 5000,
+  greetingTimeout: 5000,
+  socketTimeout: 5000
 });
 
 const http = require('http');
@@ -246,8 +249,14 @@ app.post('/api/auth/forgot-password', async (req, res) => {
           </div>
         `
       };
-      await transporter.sendMail(mailOptions);
-      console.log(`[AUTH] Sent OTP email to ${email}`);
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log(`[AUTH] Sent OTP email to ${email}`);
+      } catch (err) {
+        console.error('SMTP Error (Likely Render block):', err.message);
+        console.log(`[DEV ONLY] OTP for ${email} is ${otp}`);
+        return res.status(500).json({ error: 'Render Free Tier blocks SMTP. Upgrade Render or check logs for OTP.' });
+      }
     } else {
       console.log(`[DEV ONLY] OTP for ${email} is ${otp}`);
     }
@@ -600,7 +609,11 @@ app.post('/api/contact', async (req, res) => {
           <p><strong>Message:</strong><br/>${message.replace(/\n/g, '<br/>')}</p>
         `
       };
-      await transporter.sendMail(mailOptions);
+      try {
+        await transporter.sendMail(mailOptions);
+      } catch (err) {
+        console.error('SMTP Error (Contact Form):', err.message);
+      }
     }
 
     res.json({ success: true, message: 'Message sent successfully' });
