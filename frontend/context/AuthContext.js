@@ -131,10 +131,26 @@ export function AuthProvider({ children }) {
     router.push('/login');
   };
 
-  const updateProfile = (name, email) => {
-    const updatedUser = { ...user, name, email };
-    setUser(updatedUser);
-    localStorage.setItem('luxe_user', JSON.stringify(updatedUser));
+  const updateProfile = async (name, email, profileImage = '') => {
+    try {
+      const token = localStorage.getItem('luxe_token');
+      if (profileImage) {
+        // Send to backend
+        await fetch('http://localhost:5000/api/users/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ profileImage })
+        });
+      }
+      
+      const updatedUser = { ...user, name, email, ...(profileImage && { profileImage }) };
+      setUser(updatedUser);
+      localStorage.setItem('luxe_user', JSON.stringify(updatedUser));
+      return { success: true };
+    } catch (error) {
+      console.error('Failed to update profile', error);
+      return { success: false };
+    }
   };
 
   const cancelOrder = async (orderId) => {

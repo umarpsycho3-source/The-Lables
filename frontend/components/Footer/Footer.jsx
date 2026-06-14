@@ -80,7 +80,7 @@ export default function Footer() {
             <h4 className="text-white font-bold tracking-widest text-sm mb-2 uppercase">Shop</h4>
             <Link href="/collections/Football Jerseys" className="text-secondary hover:text-primary transition-colors text-sm">Football Jerseys</Link>
             <Link href="/collections/New Arrivals" className="text-secondary hover:text-primary transition-colors text-sm">New Arrivals</Link>
-            <Link href="/collections/Best Sellers" className="text-secondary hover:text-primary transition-colors text-sm">Best Sellers</Link>
+            <Link href="/reviews" className="text-secondary hover:text-primary transition-colors text-sm">Customer Reviews</Link>
           </div>
 
           <div className="col-span-1 flex flex-col space-y-4">

@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   phone: { type: String },
   role: { type: String, default: 'customer' },
+  isVerifiedBuyer: { type: Boolean, default: false },
+  isActive: { type: Boolean, default: true },
+  profileImage: { type: String, default: '' },
   notifications: [{
     message: String,
     date: Date,

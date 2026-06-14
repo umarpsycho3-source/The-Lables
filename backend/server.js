@@ -26,6 +26,7 @@ const User = require('./models/User');
 const Product = require('./models/Product');
 const Order = require('./models/Order');
 const ContactMessage = require('./models/ContactMessage');
+const Review = require('./models/Review');
 
 // Import Cloudinary Setup
 const { uploadCloud } = require('./config/cloudinary');
@@ -647,6 +648,105 @@ app.put('/api/contact/:id/status', verifyToken, async (req, res) => {
   }
 });
 
+// --- User Management Routes ---
+
+app.get('/api/admin/users', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Unauthorized' });
+  try {
+    const users = await User.find().select('-password').sort({ createdAt: -1 });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/admin/users/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Unauthorized' });
+  try {
+    const { isVerifiedBuyer, isActive } = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, { isVerifiedBuyer, isActive }, { new: true }).select('-password');
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/users/profile', verifyToken, async (req, res) => {
+  try {
+    const { profileImage } = req.body;
+    const user = await User.findByIdAndUpdate(req.user.id, { profileImage }, { new: true }).select('-password');
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// --- Customer Reviews Routes ---
+
+app.get('/api/reviews', async (req, res) => {
+  try {
+    const reviews = await Review.find({ isApproved: true })
+      .populate('userId', 'name profileImage isVerifiedBuyer')
+      .sort({ createdAt: -1 });
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/reviews', verifyToken, async (req, res) => {
+  try {
+    const { rating, content, name } = req.body;
+    if (!rating || !content || !name) return res.status(400).json({ error: 'All fields are required' });
+    
+    const newReview = new Review({
+      userId: req.user.id,
+      name,
+      rating,
+      content,
+      isApproved: false // Requires admin approval
+    });
+    
+    await newReview.save();
+    res.status(201).json(newReview);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/admin/reviews', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Unauthorized' });
+  try {
+    const reviews = await Review.find()
+      .populate('userId', 'name profileImage isVerifiedBuyer')
+      .sort({ createdAt: -1 });
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/admin/reviews/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Unauthorized' });
+  try {
+    const { isApproved } = req.body;
+    const review = await Review.findByIdAndUpdate(req.params.id, { isApproved }, { new: true });
+    res.json(review);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/admin/reviews/:id', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Unauthorized' });
+  try {
+    await Review.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Review deleted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 server.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

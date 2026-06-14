@@ -4,7 +4,7 @@ import AdminRoute from '@/components/ProtectedRoute/AdminRoute';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ShoppingBag, Package, LogOut, Hexagon, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, LogOut, Hexagon, MessageSquare, Users, Star } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
@@ -14,6 +14,8 @@ export default function AdminLayout({ children }) {
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Products', href: '/admin/products', icon: ShoppingBag },
     { name: 'Orders', href: '/admin/orders', icon: Package },
+    { name: 'Users', href: '/admin/users', icon: Users },
+    { name: 'Reviews', href: '/admin/reviews', icon: Star },
     { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
     { name: 'Live Chat', href: '/admin/chat', icon: MessageSquare },
   ];

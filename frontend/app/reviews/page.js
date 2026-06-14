@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Quote, BadgeCheck, MessageSquarePlus, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-import ReviewModal from '../ReviewModal/ReviewModal';
+import { Star, Quote, BadgeCheck, MessageSquarePlus } from 'lucide-react';
+import ReviewModal from '@/components/ReviewModal/ReviewModal';
 
-export default function CustomerReviews() {
+export default function ReviewsPage() {
   const [reviews, setReviews] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -30,50 +29,43 @@ export default function CustomerReviews() {
   }, []);
 
   return (
-    <section className="py-24 bg-background relative overflow-hidden border-t border-white/5">
+    <div className="min-h-screen bg-background pt-32 pb-24 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold/5 rounded-full blur-[120px] -z-10" />
 
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-16">
-          <h2 className="serif text-4xl md:text-5xl font-bold mb-4 text-white">
-            What Our <span className="text-primary italic">Fans</span> Say
-          </h2>
+          <h1 className="serif text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white">
+            Customer <span className="text-primary italic">Reviews</span>
+          </h1>
           <p className="text-secondary text-lg max-w-2xl mx-auto mb-8">
-            Don't just take our word for it. Read reviews from athletes and fans who experience our player-issue supremacy firsthand.
+            Read what our community of athletes and fans have to say about their experience with The Label's premium player-issue apparel.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center">
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3 rounded-full font-bold uppercase tracking-widest text-sm transition-colors flex items-center gap-2"
-            >
-              <MessageSquarePlus size={18} />
-              Write a Review
-            </button>
-            {reviews.length > 3 && (
-              <Link href="/reviews" className="text-primary hover:text-emerald-400 font-bold uppercase tracking-widest text-sm transition-colors flex items-center gap-1 group">
-                See All Reviews
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            )}
-          </div>
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="bg-primary hover:bg-emerald-500 text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-colors shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center gap-2 mx-auto"
+          >
+            <MessageSquarePlus size={18} />
+            Write a Review
+          </button>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20 text-white animate-pulse">Loading reviews...</div>
+          <div className="flex justify-center py-20 text-white animate-pulse">Loading all reviews...</div>
         ) : reviews.length === 0 ? (
-          <div className="text-center py-10">
-            <p className="text-gray-500 mb-4">No reviews yet. Be the first to share your experience!</p>
+          <div className="text-center py-20 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-sm">
+            <MessageSquarePlus size={48} className="text-gray-500 mx-auto mb-4" />
+            <p className="text-gray-400 text-lg mb-2">No reviews have been published yet.</p>
+            <p className="text-gray-500">Be the first to share your experience with us!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {reviews.slice(0, 3).map((review, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {reviews.map((review, idx) => (
               <motion.div
                 key={review._id}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.2, duration: 0.6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
                 className="bg-white/5 border border-white/10 rounded-[2rem] p-8 relative hover:bg-white/10 transition-colors group flex flex-col h-full"
               >
                 <div className="absolute -top-4 -right-4 w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center border border-primary/50 text-primary group-hover:scale-110 transition-transform">
@@ -125,6 +117,6 @@ export default function CustomerReviews() {
           alert('Review submitted! It will appear once approved by an admin.');
         }} 
       />
-    </section>
+    </div>
   );
 }
