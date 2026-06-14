@@ -36,7 +36,7 @@ export default function FifaSection() {
               The biggest tournament in the world is almost here. Show your true colors with our exclusive collection of authentic Player Issue national team kits. Engineered for peak performance, destined for history.
             </p>
 
-            <Link href="/collections/Football Jerseys">
+            <Link href="/collections/National Jerseys">
               <button className="group mt-4 relative overflow-hidden rounded-full bg-gradient-to-r from-gold to-yellow-600 px-8 py-4 flex items-center gap-4 text-black shadow-[0_0_30px_rgba(255,215,0,0.3)] hover:shadow-[0_0_50px_rgba(255,215,0,0.5)] transition-all">
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out" />
                 <span className="font-bold tracking-widest uppercase text-sm relative z-10">Shop National Teams</span>
@@ -80,7 +80,7 @@ export default function FifaSection() {
               <motion.div 
                 animate={{ y: [0, 20, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-10 left-10 bg-black/50 backdrop-blur-md border border-white/10 p-4 rounded-2xl"
+                className="hidden md:block absolute bottom-10 left-10 bg-black/50 backdrop-blur-md border border-white/10 p-4 rounded-2xl"
               >
                 <p className="text-white font-bold">Player Issue</p>
                 <p className="text-xs text-secondary">Authentic Grade</p>

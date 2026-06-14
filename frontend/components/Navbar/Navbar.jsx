@@ -45,7 +45,7 @@ export default function Navbar() {
     {
       name: 'Club Jerseys',
       href: '/collections/Club Jerseys',
-      img: 'https://images.unsplash.com/photo-1600255821058-c41165a36322?q=80&w=1000&auto=format&fit=crop'
+      img: 'https://images.unsplash.com/photo-1551280857-2b9ebf241519?q=80&w=1000&auto=format&fit=crop'
     }
   ];
 
