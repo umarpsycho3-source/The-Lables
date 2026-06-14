@@ -249,7 +249,7 @@ export default function AdminProducts() {
                       required 
                       value={newProduct.category} 
                       onChange={e => setNewProduct({...newProduct, category: e.target.value})} 
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-primary appearance-none"
+                      className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
                     >
                       <option value="National Jerseys">National Jerseys</option>
                       <option value="Club Jerseys">Club Jerseys</option>
