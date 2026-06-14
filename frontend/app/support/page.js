@@ -15,6 +15,38 @@ const faqs = [
 
 export default function SupportPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  
+  // Contact Form State
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const [contactStatus, setContactStatus] = useState('idle'); // idle, submitting, success, error
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    if (!contactName || !contactEmail || !contactMessage) return;
+    
+    setContactStatus('submitting');
+    try {
+      const res = await fetch('https://the-lables.onrender.com/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: contactName, email: contactEmail, message: contactMessage })
+      });
+      if (res.ok) {
+        setContactStatus('success');
+        setContactName('');
+        setContactEmail('');
+        setContactMessage('');
+        setTimeout(() => setContactStatus('idle'), 3000);
+      } else {
+        setContactStatus('error');
+      }
+    } catch (error) {
+      console.error('Contact submit error:', error);
+      setContactStatus('error');
+    }
+  };
 
   const toggleFaq = (index) => {
     if (openFaq === index) {
@@ -114,23 +146,55 @@ export default function SupportPage() {
                 Have a product idea or want to offer something for our store? We'd love to hear from you!
               </p>
               
-              <form className="space-y-4">
+              <form onSubmit={handleContactSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-white mb-2">Full Name</label>
-                    <input type="text" placeholder="Your name" className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white focus:border-primary outline-none" />
+                    <input 
+                      type="text" 
+                      placeholder="Your name" 
+                      value={contactName}
+                      onChange={(e) => setContactName(e.target.value)}
+                      required
+                      className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white focus:border-primary outline-none" 
+                    />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-white mb-2">Email Address</label>
-                    <input type="email" placeholder="your@email.com" className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white focus:border-primary outline-none" />
+                    <input 
+                      type="email" 
+                      placeholder="your@email.com" 
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                      required
+                      className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white focus:border-primary outline-none" 
+                    />
                   </div>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-white mb-2">Product Description</label>
-                  <textarea rows="4" placeholder="Describe the product..." className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white focus:border-primary outline-none resize-none"></textarea>
+                  <textarea 
+                    rows="4" 
+                    placeholder="Describe the product..." 
+                    value={contactMessage}
+                    onChange={(e) => setContactMessage(e.target.value)}
+                    required
+                    className="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-white focus:border-primary outline-none resize-none"
+                  ></textarea>
                 </div>
-                <button type="button" className="w-full bg-primary hover:bg-emerald-500 text-black py-3 rounded-xl font-bold transition-colors">
-                  Submit Suggestion
+                <button 
+                  type="submit" 
+                  disabled={contactStatus === 'submitting'}
+                  className={`w-full py-3 rounded-xl font-bold transition-colors ${
+                    contactStatus === 'success' ? 'bg-green-500 text-white' : 
+                    contactStatus === 'error' ? 'bg-red-500 text-white' : 
+                    'bg-primary hover:bg-emerald-500 text-black'
+                  }`}
+                >
+                  {contactStatus === 'submitting' ? 'Sending...' : 
+                   contactStatus === 'success' ? 'Sent Successfully!' : 
+                   contactStatus === 'error' ? 'Error - Try Again' : 
+                   'Submit Suggestion'}
                 </button>
               </form>
             </div>

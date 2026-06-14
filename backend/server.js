@@ -5,6 +5,15 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
+  }
+});
 
 const http = require('http');
 const { Server } = require('socket.io');
@@ -13,6 +22,7 @@ const { Server } = require('socket.io');
 const User = require('./models/User');
 const Product = require('./models/Product');
 const Order = require('./models/Order');
+const ContactMessage = require('./models/ContactMessage');
 
 // Import Cloudinary Setup
 const { uploadCloud } = require('./config/cloudinary');
@@ -90,6 +100,64 @@ io.on('connection', (socket) => {
       activeChats.delete(socket.id);
     }
   });
+});
+
+// --- Contact Form Routes ---
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Please provide name, email, and message' });
+    }
+    const newMessage = new ContactMessage({ name, email, message });
+    await newMessage.save();
+
+    // Optionally email the admin
+    if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
+      const mailOptions = {
+        from: `"The Label System" <${process.env.GMAIL_USER}>`,
+        to: process.env.GMAIL_USER, // Send to the admin's email
+        subject: `New Contact Form Submission from ${name}`,
+        html: `
+          <h3>New Message Received</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Message:</strong><br/>${message.replace(/\n/g, '<br/>')}</p>
+        `
+      };
+      await transporter.sendMail(mailOptions);
+    }
+
+    res.json({ success: true, message: 'Message sent successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/contact', verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+    const messages = await ContactMessage.find().sort({ createdAt: -1 });
+    res.json(messages.map(m => {
+      const obj = m.toObject();
+      obj.id = obj._id.toString();
+      return obj;
+    }));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/contact/:id/status', verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin only' });
+    const msg = await ContactMessage.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
+    if (!msg) return res.status(404).json({ error: 'Message not found' });
+    res.json({ success: true, status: msg.status });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
@@ -213,8 +281,34 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     otpStore.set(email, { otp, expiry: Date.now() + 15 * 60 * 1000 });
     
-    console.log(`[DEV ONLY] OTP for ${email} is ${otp}`);
-    res.json({ success: true, message: 'Verification code sent' });
+    // Send email using Nodemailer
+    if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
+      const mailOptions = {
+        from: `"The Label Support" <${process.env.GMAIL_USER}>`,
+        to: email,
+        subject: 'Password Reset Verification Code - The Label',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+            <h2 style="color: #10b981; text-align: center;">The Label</h2>
+            <p>Hello,</p>
+            <p>You requested to reset your password. Use the verification code below to proceed:</p>
+            <div style="background-color: #f3f4f6; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; border-radius: 8px; margin: 20px 0;">
+              ${otp}
+            </div>
+            <p>This code will expire in 15 minutes.</p>
+            <p>If you did not request this, please ignore this email.</p>
+            <br/>
+            <p>Best regards,<br/>The Label Team</p>
+          </div>
+        `
+      };
+      await transporter.sendMail(mailOptions);
+      console.log(`[AUTH] Sent OTP email to ${email}`);
+    } else {
+      console.log(`[DEV ONLY] OTP for ${email} is ${otp}`);
+    }
+    
+    res.json({ success: true, message: 'Verification code sent to your email' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

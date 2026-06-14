@@ -14,6 +14,7 @@ export default function AdminLayout({ children }) {
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Products', href: '/admin/products', icon: ShoppingBag },
     { name: 'Orders', href: '/admin/orders', icon: Package },
+    { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
     { name: 'Live Chat', href: '/admin/chat', icon: MessageSquare },
   ];
 
