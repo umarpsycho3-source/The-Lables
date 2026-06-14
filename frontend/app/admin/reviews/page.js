@@ -16,7 +16,7 @@ export default function AdminReviewsPage() {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/admin/reviews', {
+      const res = await fetch('https://the-lables.onrender.com/api/admin/reviews', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -32,7 +32,7 @@ export default function AdminReviewsPage() {
 
   const toggleApproval = async (id, currentStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/reviews/${id}`, {
+      const res = await fetch(`https://the-lables.onrender.com/api/admin/reviews/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export default function AdminReviewsPage() {
   const deleteReview = async (id) => {
     if (!confirm('Are you sure you want to delete this review completely?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/reviews/${id}`, {
+      const res = await fetch(`https://the-lables.onrender.com/api/admin/reviews/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

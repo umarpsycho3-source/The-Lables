@@ -23,7 +23,7 @@ export default function ReviewModal({ isOpen, onClose, onSuccess }) {
     setError('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/reviews', {
+      const res = await fetch('https://the-lables.onrender.com/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

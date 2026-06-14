@@ -136,7 +136,7 @@ export function AuthProvider({ children }) {
       const token = localStorage.getItem('luxe_token');
       if (profileImage) {
         // Send to backend
-        await fetch('http://localhost:5000/api/users/profile', {
+        await fetch('https://the-lables.onrender.com/api/users/profile', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({ profileImage })
