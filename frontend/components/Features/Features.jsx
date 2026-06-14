@@ -22,7 +22,7 @@ const features = [
   {
     icon: RefreshCw,
     title: "Easy Returns",
-    description: "Hassle-free 14-day return policy on all unworn items."
+    description: "Hassle-free 7-day return policy on all unworn items."
   }
 ];
 
