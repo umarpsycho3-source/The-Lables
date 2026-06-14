@@ -8,7 +8,7 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [isCartLoaded, setIsCartLoaded] = useState(false);
-  const { fetchOrders } = useAuth();
+  const { fetchOrders, user } = useAuth();
 
   const checkout = async (paymentMethod = 'credit_card', referenceCode = null, receiptImage = null, shippingDetails = null) => {
     if (cartItems.length === 0) return null;
@@ -84,10 +84,14 @@ export function CartProvider({ children }) {
 
   const clearCart = () => setCartItems([]);
 
-  const cartTotal = cartItems.reduce((total, item) => {
+  const subtotal = cartItems.reduce((total, item) => {
     const activePrice = item.isOffer ? item.offerPrice : item.price;
     return total + activePrice * item.quantity;
   }, 0);
+  
+  const verifiedDiscount = user?.isVerifiedBuyer ? 350 : 0;
+  const cartTotal = Math.max(0, subtotal - verifiedDiscount);
+  
   const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   return (
@@ -98,6 +102,8 @@ export function CartProvider({ children }) {
       updateQuantity,
       clearCart,
       checkout,
+      subtotal,
+      verifiedDiscount,
       cartTotal,
       cartCount,
     }}>

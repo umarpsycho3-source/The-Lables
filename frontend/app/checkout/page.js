@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useCurrency } from '@/context/CurrencyContext';
 
 export default function CheckoutPage() {
-  const { cartItems, cartTotal, clearCart, checkout } = useCart();
+  const { cartItems, cartTotal, subtotal, verifiedDiscount, clearCart, checkout } = useCart();
   const { formatPrice } = useCurrency();
   const [isProcessing, setIsProcessing] = useState(false);
   const [completedOrderId, setCompletedOrderId] = useState(null);
@@ -275,8 +275,16 @@ export default function CheckoutPage() {
               <div className="border-t border-white/10 pt-6 mb-8 space-y-4">
                 <div className="flex justify-between text-secondary">
                   <span>Subtotal</span>
-                  <span className="text-white">{formatPrice(cartTotal)}</span>
+                  <span className="text-white">{formatPrice(subtotal)}</span>
                 </div>
+                
+                {verifiedDiscount > 0 && (
+                  <div className="flex justify-between text-emerald-400">
+                    <span className="flex items-center gap-1"><ShieldCheck size={16} /> Verified Buyer Discount</span>
+                    <span>-{formatPrice(verifiedDiscount)}</span>
+                  </div>
+                )}
+
                 <div className="flex justify-between text-secondary">
                   <span>Shipping</span>
                   <span className="text-white">Complimentary</span>
