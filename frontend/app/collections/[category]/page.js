@@ -61,13 +61,13 @@ export default function CollectionPage() {
 
         {/* Filter and Sort Bar */}
         {products.length > 0 && (
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-            <div className="flex items-center gap-2 bg-white/5 p-1 rounded-2xl border border-white/10">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 w-full">
+            <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 bg-white/5 p-1 rounded-xl md:rounded-2xl border border-white/10 w-full md:w-auto">
               {['All', 'National Jerseys', 'Club Jerseys'].map(cat => (
                 <Link 
                   key={cat}
                   href={`/collections/${encodeURIComponent(cat.toLowerCase() === 'all' ? 'all' : cat)}`}
-                  className={`px-6 py-2 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${
+                  className={`px-3 md:px-6 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-sm font-bold uppercase tracking-widest transition-all text-center flex-1 md:flex-none ${
                     (categoryName.toLowerCase() === cat.toLowerCase() || (cat === 'All' && categoryName.toLowerCase() === 'all'))
                       ? 'bg-primary text-black' 
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -77,7 +77,7 @@ export default function CollectionPage() {
                 </Link>
               ))}
             </div>
-            <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-3">
               <span className="text-sm text-gray-400">Sort by:</span>
               <select 
                 value={sortOption} 
